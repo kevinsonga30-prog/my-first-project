@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="TJ CYBER — Académie de cybersécurité : parcours certifiants, labs sandbox, leçons Python, C, Batch & JavaScript.">
+<title>TJ CYBER — Académie Cybersécurité</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2305080b'/%3E%3Crect x='5' y='5' width='54' height='54' fill='none' stroke='%232eff9a' stroke-width='3'/%3E%3Ctext x='32' y='44' font-family='monospace' font-size='28' font-weight='bold' fill='%232eff9a' text-anchor='middle'%3ETJ%3C/text%3E%3C/svg%3E">
+<script>
+document.documentElement.classList.add('ready');
+window.addEventListener('error',function(){
+  document.documentElement.classList.remove('ready');
+  if(!document.getElementById('errBanner')){
+    var b=document.createElement('div');b.id='errBanner';
+    b.style.cssText='position:fixed;top:0;left:0;right:0;z-index:9999;background:#ff4d5e;color:#05080b;font-family:monospace;font-size:13px;font-weight:bold;padding:12px 16px;text-align:center';
+    b.textContent='⚠ Code incomplet ou erreur détectée — la page s\u2019affiche en mode statique. Vérifie d\u2019avoir copié TOUT le code, puis ré-enregistre.';
+    (document.body||document.documentElement).appendChild(b);
+  }
+});
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05080b; --bg2:#0a1016; --panel:#0d141c; --panel2:#101923;
+  --line:#1c2833; --line2:#28394a;
+  --txt:#dfe9f1; --muted:#7f8ea0;
+  --accent:#2eff9a;
+  --accent-dim:rgba(46,255,154,.09);
+  --accent-glow:rgba(46,255,154,.4);
+  --accent-soft:rgba(46,255,154,.6);
+  --scan-glow:rgba(46,255,154,.05);
+  --grid-line:rgba(46,255,154,.055);
+  --ok:#2eff9a; --warn:#ffb347; --err:#ff4d5e; --info:#39c5ff;
+  --disp:'Chakra Petch',sans-serif; --body:'IBM Plex Sans',sans-serif; --mono:'IBM Plex Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{background:transparent;color:var(--txt);font-family:var(--body);font-size:16px;line-height:1.6;overflow-x:hidden}
+::selection{background:var(--accent);color:#04110b}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--line2);border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font-family:inherit;cursor:pointer}
+input,select{font-family:var(--mono)}
+
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:48px 48px;animation:gridDrift 16s linear infinite}
+@keyframes gridDrift{to{background-position:48px 48px}}
+#bgfx{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55}
+#page{position:relative;z-index:1}
+
+.noise{position:fixed;inset:0;z-index:98;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")}
+.scanline{position:fixed;left:0;right:0;height:120px;z-index:97;pointer-events:none;
+  background:linear-gradient(180deg,transparent,var(--scan-glow),transparent);
+  animation:scan 9s linear infinite}
+@keyframes scan{0%{top:-140px}100%{top:110vh}}
+
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding:8px 28px;border-bottom:1px solid var(--line);background:rgba(10,16,22,.9);
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.topbar .dot{width:8px;height:8px;background:var(--accent);border-radius:50%;display:inline-block;margin-right:8px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 var(--accent-glow)}50%{box-shadow:0 0 0 6px rgba(0,0,0,0)}}
+.topbar .lvl{color:var(--accent)}
+.topbar-right{display:flex;gap:16px;align-items:center}
+.theme-chip{background:none;border:1px solid var(--line2);color:var(--muted);font-family:var(--mono);font-size:10px;letter-spacing:.14em;padding:5px 11px;text-transform:uppercase;transition:.2s}
+.theme-chip:hover{border-color:var(--accent);color:var(--accent)}
+.theme-chip .cdot{display:inline-block;width:8px;height:8px;background:var(--accent);margin-left:7px;vertical-align:middle}
+.lang-sw{display:flex;border:1px solid var(--line2)}
+.lang-sw button{background:none;border:0;color:var(--muted);font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.12em;padding:5px 10px;transition:.2s}
+.lang-sw button:first-child{border-right:1px solid var(--line2)}
+.lang-sw button.on{background:var(--accent);color:#05080b}
+
+.nav{position:sticky;top:0;z-index:90;display:flex;align-items:center;gap:16px;
+  padding:14px 28px;background:rgba(5,8,11,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.logo{font-family:var(--disp);font-weight:700;font-size:20px;letter-spacing:.04em;color:var(--txt);display:flex;align-items:center}
+.logo-badge{display:inline-block;background:var(--accent);color:#05080b;font-weight:700;font-size:17px;line-height:26px;padding:0 8px;margin-right:9px;letter-spacing:.06em;box-shadow:0 0 22px var(--accent-glow)}
+.logo .sep{color:var(--accent)}
+.logo .cursor{display:inline-block;width:10px;height:18px;background:var(--accent);vertical-align:-2px;margin-left:5px;animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.nav-links{display:flex;gap:20px;margin-left:auto}
+.nav-links a{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);position:relative;padding:4px 0;transition:color .2s}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--accent);transition:width .25s}
+.nav-links a:hover{color:var(--accent)}
+.nav-links a:hover::after{width:100%}
+
+.btn{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  padding:14px 24px;border:1px solid var(--line2);color:var(--accent);background:transparent;transition:.25s;position:relative}
+.btn:hover{border-color:var(--accent);background:var(--accent-dim);transform:translateY(-2px)}
+.btn-primary{background:var(--accent);color:#05080b;border-color:var(--accent)}
+.btn-primary:hover{box-shadow:0 0 28px var(--accent-glow);background:var(--accent)}
+.btn-sm{padding:9px 16px;font-size:11px}
+
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+section{position:relative}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.kicker::before{content:"// "}
+h2{font-family:var(--disp);font-weight:700;font-size:clamp(28px,4vw,46px);line-height:1.1;text-transform:uppercase;letter-spacing:.01em}
+.mask{overflow:hidden;display:block}
+.mask>span{display:block;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+html.ready .mask>span{transform:translateY(115%)}
+html.ready .in .mask>span{transform:none}
+.frame{position:relative}
+.frame::before,.frame::after{content:"";position:absolute;width:16px;height:16px;border:1px solid var(--accent);opacity:.85;z-index:2}
+.frame::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+.frame::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+[data-reveal]{transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i,0)*90ms)}
+html.ready [data-reveal]{opacity:0;transform:translateY(26px)}
+html.ready [data-reveal].in{opacity:1;transform:none}
+.xp-chip{font-family:var(--mono);font-size:12px;letter-spacing:.12em;border:1px solid var(--accent-soft);color:var(--accent);padding:8px 16px}
+.xp-chip b{display:inline-block;transition:.2s}
+.xp-chip b.pop{transform:scale(1.5);color:#fff}
+
+.hero{padding:70px 0 80px;border-bottom:1px solid var(--line)}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(38px,5.6vw,72px);line-height:1.02;text-transform:uppercase;margin:6px 0 22px}
+.hero h1 .ln{display:block}
+.hero h1 .accent{color:var(--accent);text-shadow:0 0 30px var(--accent-glow)}
+.lead{color:var(--muted);font-size:17px;max-width:540px;margin-bottom:30px}
+.lead b{color:var(--txt)}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:42px}
+.hero-stats{display:flex;border:1px solid var(--line);background:rgba(13,20,28,.9)}
+.hero-stats>div{padding:16px 24px;border-right:1px solid var(--line);flex:1}
+.hero-stats>div:last-child{border-right:0}
+.hero-stats .num{font-family:var(--disp);font-weight:700;font-size:26px;color:var(--accent)}
+.hero-stats .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+.term{background:rgba(7,12,16,.92);border:1px solid var(--line2);box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 60px var(--accent-dim)}
+.term-head{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--panel)}
+.term-head i{width:11px;height:11px;border-radius:50%;display:inline-block}
+.term-head i:nth-child(1){background:#ff5f57}.term-head i:nth-child(2){background:#febc2e}.term-head i:nth-child(3){background:#28c840}
+.term-title{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:10px;letter-spacing:.08em}
+.term-body{padding:18px;height:380px;overflow-y:auto;font-family:var(--mono);font-size:13px;line-height:1.75}
+.term-body .cmd{color:var(--txt)}.term-body .cmd::before{content:"➜ ~ ";color:var(--accent)}
+.term-body .ok{color:var(--accent)}.term-body .warn{color:var(--warn)}.term-body .err{color:var(--err)}
+.term-body .out{color:var(--muted)}.term-body .sys{color:var(--info)}
+.term-input-line{display:flex;align-items:center;gap:8px}
+.term-input-line .prompt{color:var(--accent);white-space:nowrap}
+#termIn{flex:1;background:transparent;border:0;outline:0;color:var(--txt);font-size:13px;font-family:var(--mono);caret-color:var(--accent)}
+
+.ticker{border-bottom:1px solid var(--line);background:rgba(10,16,22,.9);overflow:hidden;padding:12px 0}
+.ticker-track{display:flex;gap:56px;width:max-content;animation:tick 38s linear infinite;font-family:var(--mono);font-size:12px;letter-spacing:.06em;white-space:nowrap}
+.ticker:hover .ticker-track{animation-play-state:paused}
+@keyframes tick{to{transform:translateX(-50%)}}
+.ticker-track .item{display:flex;gap:10px;align-items:center;color:var(--muted)}
+.sev{padding:2px 8px;font-size:10px;letter-spacing:.14em;font-weight:600}
+.sev-crit{background:rgba(255,77,94,.15);color:var(--err);border:1px solid rgba(255,77,94,.4)}
+.sev-high{background:rgba(255,179,71,.12);color:var(--warn);border:1px solid rgba(255,179,71,.4)}
+.sev-med{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-soft)}
+
+.parcours{padding:110px 0}
+.parcours-grid{display:grid;grid-template-columns:380px 1fr;gap:64px;align-items:start}
+.parcours-side{position:sticky;top:96px}
+.parcours-side p.desc{color:var(--muted);margin:18px 0 26px}
+.legend{border:1px solid var(--line);background:rgba(13,20,28,.92);padding:18px;font-family:var(--mono);font-size:11px;letter-spacing:.1em}
+.legend div{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line)}
+.legend div:last-child{border-bottom:0}
+.legend .v{color:var(--accent)}
+.module{display:grid;grid-template-columns:70px 1fr;gap:20px;padding:26px;border:1px solid var(--line);background:rgba(13,20,28,.92);margin-bottom:16px;transition:.3s;position:relative}
+.module:hover{border-color:var(--accent);transform:translateX(8px);background:var(--panel2)}
+.module .idx{font-family:var(--disp);font-weight:700;font-size:30px;color:transparent;-webkit-text-stroke:1px var(--line2);transition:.3s}
+.module:hover .idx{-webkit-text-stroke:1px var(--accent)}
+.module h3{font-family:var(--disp);font-size:19px;font-weight:600;text-transform:uppercase;margin-bottom:6px}
+.module p{color:var(--muted);font-size:14px;margin-bottom:14px}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:4px 9px;border:1px solid var(--line2);color:var(--muted)}
+.tag.g{color:var(--accent);border-color:var(--accent-soft)}
+.tag.a{color:var(--warn);border-color:rgba(255,179,71,.4)}
+.tag.r{color:var(--err);border-color:rgba(255,77,94,.4)}
+.module-meta{display:flex;gap:22px;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
+.module-meta b{color:var(--txt)}
+.module .arrow{position:absolute;right:22px;top:26px;color:var(--line2);font-size:20px;transition:.3s}
+.module:hover .arrow{color:var(--accent);transform:translateX(5px)}
+
+.labs{padding:110px 0;background:rgba(10,16,22,.84);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:48px;flex-wrap:wrap}
+.sec-head p.sub{color:var(--muted);max-width:420px}
+.lab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.lab-card{border:1px solid var(--line);background:rgba(13,20,28,.92);transition:.3s;display:flex;flex-direction:column}
+.lab-card:hover{border-color:var(--accent);transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.lab-img{position:relative;overflow:hidden;aspect-ratio:3/1.7}
+.lab-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.15) brightness(.8);transition:.5s}
+.lab-card:hover .lab-img img{filter:grayscale(.2) contrast(1.05) brightness(.95);transform:scale(1.05)}
+.lab-status{position:absolute;top:12px;left:12px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;padding:4px 10px;background:rgba(5,8,11,.85);border:1px solid var(--accent-soft);color:var(--accent)}
+.lab-status.mnt{color:var(--warn);border-color:rgba(255,179,71,.4)}
+.lab-body{padding:20px;display:flex;flex-direction:column;gap:12px;flex:1}
+.lab-body h3{font-family:var(--disp);font-size:17px;text-transform:uppercase;font-weight:600}
+.lab-body p{color:var(--muted);font-size:13.5px;flex:1}
+.lab-meta{display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.dif{display:flex;gap:3px;align-items:center}
+.dif i{width:14px;height:5px;background:var(--line2)}
+.dif i.f{background:var(--accent)}
+.dif.hot i.f{background:var(--warn)}
+.dif.ext i.f{background:var(--err)}
+
+.code-sec{padding:110px 0}
+.code-grid{display:grid;grid-template-columns:264px 1fr;gap:24px;align-items:start}
+.lang-tabs{display:flex;flex-direction:column;gap:10px;position:sticky;top:96px}
+.lang-tab{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--line);background:rgba(13,20,28,.92);transition:.25s;text-align:left;width:100%}
+.lang-tab:hover{border-color:var(--line2);transform:translateX(4px)}
+.lang-tab.active{border-color:var(--accent);background:var(--accent-dim)}
+.lang-tab .mb{font-family:var(--mono);font-weight:600;font-size:12px;color:var(--accent);border:1px solid var(--accent);padding:5px 0;min-width:42px;text-align:center;flex-shrink:0}
+.lang-tab .lname{font-family:var(--disp);font-weight:600;font-size:15px;text-transform:uppercase;line-height:1.2}
+.lang-tab .lsub{font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:.14em}
+.lang-tab .lcheck{margin-left:auto;color:var(--ok);font-size:15px}
+.code-panel{border:1px solid var(--line2);background:rgba(7,12,16,.94)}
+.code-head{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--panel)}
+.code-head i{width:11px;height:11px;border-radius:50%;display:inline-block}
+.code-head i:nth-child(1){background:#ff5f57}.code-head i:nth-child(2){background:#febc2e}.code-head i:nth-child(3){background:#28c840}
+.code-head .fname{font-family:var(--mono);font-size:12px;color:var(--accent);margin-left:10px;letter-spacing:.06em}
+.copy-btn{margin-left:auto;background:none;border:1px solid var(--line2);color:var(--muted);font-family:var(--mono);font-size:10px;letter-spacing:.12em;padding:6px 12px;text-transform:uppercase;transition:.2s}
+.copy-btn:hover{border-color:var(--accent);color:var(--accent)}
+.lang-desc{padding:14px 18px 0;color:var(--muted);font-size:13px;font-family:var(--mono)}
+.pills{display:flex;gap:8px;flex-wrap:wrap;padding:14px 18px}
+.pill{font-family:var(--mono);font-size:11px;letter-spacing:.05em;padding:7px 13px;border:1px solid var(--line2);background:transparent;color:var(--muted);transition:.2s}
+.pill:hover{color:var(--txt);border-color:var(--muted)}
+.pill.active{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.code-lines{padding:6px 0 16px;font-family:var(--mono);font-size:13px;line-height:1.7;overflow-x:auto}
+.cl{display:flex;padding:0 16px}
+.cl:hover{background:rgba(255,255,255,.025)}
+.cl .no{width:30px;flex-shrink:0;color:#3d4c5c;user-select:none;text-align:right;margin-right:18px}
+.cl .lc{white-space:pre;color:#c9d7e2}
+.tok-k{color:var(--accent);font-weight:600}
+.tok-s{color:var(--warn)}
+.tok-c{color:#5b6b7c;font-style:italic}
+.tok-n{color:var(--info)}
+.tok-v{color:var(--info)}
+.tok-d{color:var(--accent)}
+.code-notes{padding:0 18px 22px}
+.code-notes h4{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.code-notes li{color:var(--muted);font-size:14px;margin-left:18px;margin-bottom:6px}
+.code-notes li::marker{color:var(--accent)}
+.code-quiz{border-top:1px dashed var(--line);padding:22px 18px}
+.code-quiz .q{font-size:14.5px;margin-bottom:14px}
+.quiz-opt{display:block;width:100%;text-align:left;background:#0a1118;border:1px solid var(--line2);color:var(--txt);padding:13px 16px;margin-bottom:10px;font-size:14px;font-family:var(--body);transition:.2s}
+.quiz-opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-dim)}
+.quiz-opt.right{border-color:var(--ok);background:var(--accent-dim);color:var(--accent)}
+.quiz-opt.wrong{border-color:var(--err);background:rgba(255,77,94,.08);color:var(--err)}
+.quiz-opt:disabled{cursor:default;opacity:.85}
+.ctf-feedback{margin-top:14px;font-family:var(--mono);font-size:13px;min-height:22px}
+.ctf-feedback.good{color:var(--ok)}.ctf-feedback.bad{color:var(--err)}
+.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+
+.ctf{padding:110px 0;border-top:1px solid var(--line)}
+.ctf-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.ctf-card{border:1px solid var(--line);background:rgba(13,20,28,.92);padding:30px}
+.ctf-card h3{font-family:var(--disp);font-size:20px;text-transform:uppercase;margin-bottom:6px}
+.ctf-card .sub{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:20px}
+.cipher-box{background:#070c10;border:1px solid var(--line2);padding:18px;font-family:var(--mono);font-size:17px;letter-spacing:.3em;color:var(--warn);text-align:center;margin-bottom:18px}
+.ctf-row{display:flex;gap:10px;flex-wrap:wrap}
+.ctf-row input{flex:1;min-width:180px;background:#070c10;border:1px solid var(--line2);color:var(--txt);padding:12px 14px;font-size:14px;outline:0;text-transform:uppercase;letter-spacing:.1em}
+.ctf-row input:focus{border-color:var(--accent)}
+
+.warroom{position:relative;overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.warroom-bg{position:absolute;inset:0}
+.warroom-bg img{width:100%;height:100%;object-fit:cover;opacity:.22;animation:kb 26s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.14) translate(2%,-2%)}}
+.warroom .wrap{position:relative;z-index:2;padding-top:80px;padding-bottom:80px}
+.big-stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line2);background:rgba(7,12,16,.85)}
+.big-stats>div{padding:36px 30px;border-right:1px solid var(--line)}
+.big-stats>div:last-child{border-right:0}
+.big-stats .n{font-family:var(--disp);font-weight:700;font-size:clamp(30px,3.6vw,48px);color:var(--accent)}
+.big-stats .l{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+
+.formateurs{padding:110px 0}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.team-card{border:1px solid var(--line);background:rgba(13,20,28,.92);transition:.3s}
+.team-card:hover{border-color:var(--accent);transform:translateY(-6px)}
+.team-card .ph{overflow:hidden;aspect-ratio:4/4.6}
+.team-card img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1);transition:.5s}
+.team-card:hover img{filter:grayscale(0);transform:scale(1.04)}
+.team-info{padding:18px;border-top:1px solid var(--line)}
+.team-info h3{font-family:var(--disp);font-size:17px;text-transform:uppercase}
+.team-info .role{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.08em;margin:4px 0 10px}
+.team-info .bio{font-size:13px;color:var(--muted)}
+.certs{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.cert{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;padding:3px 8px;border:1px solid var(--line2);color:var(--info)}
+
+.tarifs{padding:110px 0;background:rgba(10,16,22,.84);border-top:1px solid var(--line)}
+.toggle{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.toggle .sw{width:52px;height:26px;border:1px solid var(--line2);background:var(--panel);position:relative;cursor:pointer}
+.toggle .sw i{position:absolute;top:3px;left:3px;width:18px;height:18px;background:var(--accent);transition:.25s}
+.toggle.yearly .sw i{left:29px}
+.toggle .on{color:var(--accent)}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:48px;align-items:stretch}
+.plan{border:1px solid var(--line);background:rgba(13,20,28,.92);padding:34px 30px;display:flex;flex-direction:column;transition:.3s;position:relative}
+.plan:hover{transform:translateY(-6px);border-color:var(--line2)}
+.plan.featured{border-color:var(--accent);background:var(--panel2);box-shadow:0 0 50px var(--accent-dim)}
+.plan .badge{position:absolute;top:-12px;left:30px;background:var(--accent);color:#05080b;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.16em;padding:4px 12px}
+.plan h3{font-family:var(--disp);font-size:20px;text-transform:uppercase}
+.plan .pdesc{font-size:13px;color:var(--muted);margin:6px 0 22px}
+.price{font-family:var(--disp);font-weight:700;font-size:44px;color:var(--txt)}
+.price.pulse{animation:pp .35s}
+@keyframes pp{50%{transform:scale(1.08);color:var(--accent)}}
+.price small{font-family:var(--mono);font-size:13px;color:var(--muted);font-weight:400}
+.plan ul{list-style:none;margin:24px 0 30px;flex:1}
+.plan li{padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px;color:var(--muted);display:flex;gap:10px}
+.plan li::before{content:"▸";color:var(--accent)}
+.plan li.no{opacity:.4}.plan li.no::before{content:"✕";color:var(--err)}
+
+.temoin{padding:110px 0;overflow:hidden}
+.tcards{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;padding:30px 0 10px}
+.tcard{width:330px;background:rgba(13,20,28,.94);border:1px solid var(--line);padding:28px;position:relative;transition:.35s}
+.tcard::before{content:"";position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:80px;height:20px;background:var(--accent-dim);border:1px solid var(--accent-soft)}
+.tcard:nth-child(1){transform:rotate(-2.5deg)}
+.tcard:nth-child(2){transform:rotate(1.6deg) translateY(18px)}
+.tcard:nth-child(3){transform:rotate(-1.2deg)}
+.tcard:nth-child(4){transform:rotate(2.4deg) translateY(10px)}
+.tcard:hover{transform:rotate(0) translateY(-8px)!important;border-color:var(--accent);z-index:3}
+.tcard q{font-size:14.5px;color:var(--txt);quotes:"« " " »"}
+.tcard .who{margin-top:18px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--accent)}
+.tcard .who span{display:block;color:var(--muted);margin-top:2px}
+
+.faq{padding:110px 0;border-top:1px solid var(--line)}
+.faq-list{max-width:820px;margin:48px auto 0}
+.faq-item{border:1px solid var(--line);background:rgba(13,20,28,.92);margin-bottom:12px}
+.faq-q{width:100%;background:none;border:0;color:var(--txt);display:flex;justify-content:space-between;align-items:center;gap:20px;padding:20px 24px;font-family:var(--disp);font-size:16px;text-transform:uppercase;text-align:left;transition:.2s}
+.faq-q:hover{color:var(--accent)}
+.faq-q .ic{font-family:var(--mono);color:var(--accent);font-size:18px;transition:.3s;flex-shrink:0}
+.faq-item.open .faq-q .ic{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.faq-a p{padding:0 24px 22px;color:var(--muted);font-size:14.5px}
+
+.inscription{padding:110px 0;background:rgba(10,16,22,.84);border-top:1px solid var(--line)}
+.ins-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.ins-form{border:1px solid var(--line2);background:rgba(13,20,28,.94);padding:36px}
+.fgroup{margin-bottom:18px}
+.fgroup label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.fgroup input,.fgroup select{width:100%;background:#070c10;border:1px solid var(--line2);color:var(--txt);padding:13px 14px;font-size:14px;outline:0;transition:.2s;appearance:none}
+.fgroup input:focus,.fgroup select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+.fgroup.err input{border-color:var(--err)}
+.ferr{font-family:var(--mono);font-size:11px;color:var(--err);margin-top:6px;min-height:14px}
+.ins-success{display:none;border:1px solid var(--accent-soft);background:var(--accent-dim);padding:20px;font-family:var(--mono);font-size:13px;color:var(--accent);margin-top:18px}
+
+footer{border-top:1px solid var(--line);padding:60px 0 0;background:rgba(5,8,11,.9)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:50px}
+.foot-grid h4{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.foot-grid a.fl{display:block;color:var(--muted);font-size:14px;padding:5px 0;transition:.2s}
+.foot-grid a.fl:hover{color:var(--accent);transform:translateX(4px)}
+.foot-desc{color:var(--muted);font-size:14px;max-width:300px;margin-top:14px}
+.foot-bottom{border-top:1px solid var(--line);padding:20px 0;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted)}
+.foot-bottom .dot{width:7px;height:7px;background:var(--accent);border-radius:50%;display:inline-block;margin-right:8px;animation:pulse 2s infinite}
+
+#toasts{position:fixed;bottom:24px;right:24px;z-index:200;display:flex;flex-direction:column;gap:10px}
+.toast{background:#070c10;border:1px solid var(--accent);border-left:4px solid var(--accent);color:var(--txt);font-family:var(--mono);font-size:12.5px;padding:14px 18px;max-width:340px;animation:tin .35s cubic-bezier(.2,.8,.2,1);box-shadow:0 14px 40px rgba(0,0,0,.5)}
+.toast.warn{border-color:var(--warn);border-left-color:var(--warn)}
+@keyframes tin{from{opacity:0;transform:translateX(40px)}}
+.toast.out{opacity:0;transform:translateX(40px);transition:.35s}
+
+/* ---- modals ---- */
+.modal-overlay{position:fixed;inset:0;z-index:150;background:rgba(3,5,7,.82);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--panel);border:1px solid var(--line2);max-width:480px;width:100%;padding:32px;position:relative;max-height:88vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.modal.wide{max-width:640px}
+.modal-close{position:absolute;top:12px;right:12px;background:none;border:1px solid var(--line2);color:var(--muted);width:30px;height:30px;font-size:13px;transition:.2s;z-index:3}
+.modal-close:hover{border-color:var(--err);color:var(--err)}
+.auth-tabs{display:flex;gap:8px;margin-bottom:24px}
+.auth-tabs button{flex:1;background:none;border:1px solid var(--line2);color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.14em;padding:10px;text-transform:uppercase;transition:.2s}
+.auth-tabs button.on{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.auth-note{margin-top:18px;font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.04em;line-height:1.7}
+#legalBody h3{font-family:var(--disp);font-size:15px;text-transform:uppercase;color:var(--accent);margin:18px 0 6px}
+#legalBody p{color:var(--muted);font-size:14px;margin-bottom:6px}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0}
+.dash-cell{border:1px solid var(--line);background:#0a1118;padding:16px}
+.dash-cell .dv{font-family:var(--disp);font-weight:700;font-size:26px;color:var(--accent)}
+.dash-cell .dl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.dash-badge{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;padding:5px 10px;border:1px solid var(--accent-soft);color:var(--accent);margin:0 6px 6px 0}
+.dash-badge.off{border-color:var(--line2);color:#44586b}
+
+@media(max-width:1080px){
+  .hero-grid,.ctf-grid,.ins-grid,.code-grid{grid-template-columns:1fr}
+  .parcours-grid{grid-template-columns:1fr}
+  .parcours-side{position:static}
+  .lang-tabs{flex-direction:row;flex-wrap:wrap;position:static}
+  .lang-tab{width:auto;flex:1;min-width:150px}
+  .lab-grid,.team-grid{grid-template-columns:repeat(2,1fr)}
+  .big-stats{grid-template-columns:repeat(2,1fr)}
+  .big-stats>div:nth-child(2){border-right:0}
+  .big-stats>div{border-bottom:1px solid var(--line)}
+  .plans{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:680px){
+  .nav-links{display:none}
+  .lab-grid,.team-grid{grid-template-columns:1fr}
+  .hero-stats{flex-direction:column}
+  .hero-stats>div{border-right:0;border-bottom:1px solid var(--line)}
+  .topbar-right .hide-s{display:none}
+  .dash-grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .scanline,#bgfx{display:none}
+  .bg-grid{animation:none}
+  html.ready [data-reveal]{opacity:1;transform:none}
+  html.ready .mask>span{transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<canvas id="bgfx"></canvas>
+<div class="noise"></div>
+<div class="scanline"></div>
+
+<div id="page">
+<header class="topbar">
+  <div><span class="dot"></span><span data-i18n="top.status">SYSTÈME OPÉRATIONNEL</span> · <span data-i18n="top.time">HEURE LOCALE</span> <span id="clock">--:--:--</span></div>
+  <div class="topbar-right">
+    <span class="hide-s"><span data-i18n="top.alert">NIVEAU D'ALERTE</span> : <span class="lvl" data-i18n="top.alertv">VEILLE</span></span>
+    <span class="hide-s" data-i18n="top.crypt">CHIFFREMENT : AES-256</span>
+    <button class="theme-chip" id="themeChip" title="Palette"><span data-i18n="top.palette">PALETTE :</span> <span id="themeName">VERT</span><span class="cdot"></span></button>
+    <div class="lang-sw"><button id="langFr" class="on">FR</button><button id="langEn">EN</button></div>
+  </div>
+</header>
+
+<nav class="nav">
+  <a href="#" class="logo"><span class="logo-badge">TJ</span>CYBER<span class="sep">//</span><span class="cursor"></span></a>
+  <div class="nav-links">
+    <a href="#parcours" data-i18n="nav.parcours">Parcours</a>
+    <a href="#labs" data-i18n="nav.labs">Labs</a>
+    <a href="#code" data-i18n="nav.code">Code</a>
+    <a href="#defis" data-i18n="nav.defis">Défis</a>
+    <a href="#formateurs" data-i18n="nav.team">Formateurs</a>
+    <a href="#tarifs" data-i18n="nav.pricing">Tarifs</a>
+    <a href="#faq" data-i18n="nav.faq">FAQ</a>
+  </div>
+  <button class="btn btn-sm" id="navAuth" data-i18n="nav.login">Se connecter</button>
+  <a href="#inscription" class="btn btn-primary btn-sm" id="navEnroll" data-i18n="nav.enroll">S'enrôler</a>
+</nav>
+
+<main>
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="kicker" data-i18n="hero.kicker">Académie de cyberdéfense — Promotion 2026 ouverte</p>
+      <h1>
+        <span class="ln" data-scramble data-i18n="hero.h1a">PENSEZ COMME</span>
+        <span class="ln" data-scramble data-i18n="hero.h1b">L'ATTAQUANT.</span>
+        <span class="ln accent" data-scramble data-i18n="hero.h1c">DÉFENDEZ MIEUX.</span>
+      </h1>
+      <p class="lead" data-i18n="hero.lead">Formations intensives en cybersécurité : <b>pentest, réponse à incident, SOC, cryptographie</b> — et notre <b>académie de code</b> pour maîtriser <b>Python, C, Batch et JavaScript</b>. Des laboratoires isolés, des scénarios réels, un encadrement par des opérationnels.</p>
+      <div class="hero-ctas">
+        <a href="#parcours" class="btn btn-primary" data-i18n="hero.cta1">Commencer la formation ▸</a>
+        <a href="#code" class="btn" data-i18n="hero.cta2">Apprendre à coder</a>
+      </div>
+      <div class="hero-stats frame">
+        <div><div class="num" data-count="12480">0</div><div class="lbl" data-i18n="hero.s1">Stagiaires formés</div></div>
+        <div><div class="num" data-count="180">0</div><div class="lbl" data-i18n="hero.s2">Labs isolés</div></div>
+        <div><div class="num" data-count="94" data-suffix="%">0</div><div class="lbl" data-i18n="hero.s3">Réussite certifs</div></div>
+      </div>
+    </div>
+    <div class="term frame">
+      <div class="term-head"><i></i><i></i><i></i><span class="term-title">tj@cyber-lab: ~/accueil — bash</span></div>
+      <div class="term-body" id="termBody"></div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<section class="parcours" id="parcours">
+  <div class="wrap parcours-grid">
+    <div class="parcours-side" data-reveal>
+      <p class="kicker" data-i18n="parc.kicker">01 — Parcours certifiants</p>
+      <h2><span class="mask"><span data-i18n="parc.h2a">Le protocole</span></span><span class="mask"><span data-i18n="parc.h2b">de formation</span></span></h2>
+      <p class="desc" data-i18n="parc.desc">Six modules progressifs, du socle technique à l'offensive avancée. Chaque module combine théorie, labs en sandbox et évaluations notées. Validez les six pour obtenir le diplôme TJ CYBER et préparer les certifications du marché.</p>
+      <div class="legend frame">
+        <div><span data-i18n="lg.dur">DURÉE TOTALE</span><span class="v" data-i18n="lg.durv">44 SEMAINES</span></div>
+        <div><span data-i18n="lg.les">LEÇONS</span><span class="v">324</span></div>
+        <div><span data-i18n="lg.lab">LABS PRATIQUES</span><span class="v">96</span></div>
+        <div><span data-i18n="lg.men">MENTORAT</span><span class="v" data-i18n="lg.menv">1 SESSION / SEMAINE</span></div>
+        <div><span data-i18n="lg.out">SORTIE</span><span class="v">SOC / PENTEST / CERTIF</span></div>
+      </div>
+      <br>
+      <a href="#inscription" class="btn btn-primary" data-i18n="parc.bro">Télécharger la brochure ▸</a>
+    </div>
+    <div>
+      <article class="module frame" data-reveal style="--i:0"><div class="idx">01</div>
+        <div><span class="arrow">→</span><h3 data-i18n="m1.t">Fondations sécurité</h3>
+          <p data-i18n="m1.d">Réseaux TCP/IP, administration Linux, modèles de menace et hygiène cryptographique. Le socle non négociable.</p>
+          <div class="tags"><span class="tag g" data-i18n="tag.deb">Débutant</span><span class="tag" data-i18n="tag.net">Réseaux</span><span class="tag">Linux</span><span class="tag">Threat model</span></div>
+          <div class="module-meta"><span data-i18n="m1.dur">DURÉE <b>6 sem.</b></span><span data-i18n="m.les">LEÇONS <b>42</b></span><span>XP <b>1 200</b></span></div></div></article>
+      <article class="module frame" data-reveal style="--i:1"><div class="idx">02</div>
+        <div><span class="arrow">→</span><h3 data-i18n="m2.t">Hacking éthique &amp; pentest</h3>
+          <p data-i18n="m2.d">Reconnaissance, énumération, exploitation et rédaction de rapports professionnels. Boîte à outils Kali &amp; Burp.</p>
+          <div class="tags"><span class="tag a" data-i18n="tag.int">Intermédiaire</span><span class="tag">Web</span><span class="tag">AD</span><span class="tag">OSINT</span></div>
+          <div class="module-meta"><span data-i18n="m2.dur">DURÉE <b>8 sem.</b></span><span data-i18n="m2.les">LEÇONS <b>56</b></span><span>XP <b>1 800</b></span></div></div></article>
+      <article class="module frame" data-reveal style="--i:2"><div class="idx">03</div>
+        <div><span class="arrow">→</span><h3 data-i18n="m3.t">SOC Analyst &amp; défense active</h3>
+          <p data-i18n="m3.d">SIEM, détection, triage d'alertes, durcissement et threat hunting. Le quotidien réel d'un centre opérationnel.</p>
+          <div class="tags"><span class="tag a" data-i18n="tag.int">Intermédiaire</span><span class="tag">SIEM</span><span class="tag">EDR</span><span class="tag">Blue team</span></div>
+          <div class="module-meta"><span data-i18n="m3.dur">DURÉE <b>8 sem.</b></span><span data-i18n="m3.les">LEÇONS <b>61</b></span><span>XP <b>2 000</b></span></div></div></article>
+      <article class="module frame" data-reveal style="--i:3"><div class="idx">04</div>
+        <div><span class="arrow">→</span><h3 data-i18n="m4.t">Forensics &amp; réponse à incident</h3>
+          <p data-i18n="m4.d">Analyse mémoire, disques et journaux, chaîne de custody, gestion de crise et communication post-incident.</p>
+          <div class="tags"><span class="tag a" data-i18n="tag.int">Intermédiaire</span><span class="tag">Volatility</span><span class="tag">DFIR</span></div>
+          <div class="module-meta"><span data-i18n="m4.dur">DURÉE <b>6 sem.</b></span><span data-i18n="m4.les">LEÇONS <b>48</b></span><span>XP <b>1 600</b></span></div></div></article>
+      <article class="module frame" data-reveal style="--i:4"><div class="idx">05</div>
+        <div><span class="arrow">→</span><h3 data-i18n="m5.t">Red Team avancée</h3>
+          <p data-i18n="m5.d">Évasion de défenses, mouvement latéral, C2, émulation d'adversaires réels (TTP MITRE ATT&amp;CK).</p>
+          <div class="tags"><span class="tag r" data-i18n="tag.adv">Avancé</span><span class="tag">C2</span><span class="tag">MITRE</span><span class="tag" data-i18n="tag.eva">Évasion</span></div>
+          <div class="module-meta"><span data-i18n="m5.dur">DURÉE <b>10 sem.</b></span><span data-i18n="m5.les">LEÇONS <b>70</b></span><span>XP <b>2 600</b></span></div></div></article>
+      <article class="module frame" data-reveal style="--i:5"><div class="idx">06</div>
+        <div><span class="arrow">→</span><h3 data-i18n="m6.t">Cryptographie &amp; DevSecOps</h3>
+          <p data-i18n="m6.d">Crypto appliquée, PKI, sécurité CI/CD, secrets, conteneurs et cloud. Sécuriser ce que l'on construit.</p>
+          <div class="tags"><span class="tag a" data-i18n="tag.int">Intermédiaire</span><span class="tag">PKI</span><span class="tag">CI/CD</span><span class="tag">Cloud</span></div>
+          <div class="module-meta"><span data-i18n="m6.dur">DURÉE <b>6 sem.</b></span><span data-i18n="m6.les">LEÇONS <b>47</b></span><span>XP <b>1 500</b></span></div></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="labs" id="labs">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <div><p class="kicker" data-i18n="labs.kicker">02 — Laboratoires live</p>
+        <h2><span class="mask"><span data-i18n="labs.h2">Entraînement en sandbox</span></span></h2></div>
+      <p class="sub" data-i18n="labs.sub">Machines vulnérables éphémères, réseaux d'entreprise reconstitués, malware inoffensifs mais réalistes. Chaque lab est chronométré et noté.</p>
+    </div>
+    <div class="lab-grid">
+      <article class="lab-card" data-reveal style="--i:0">
+        <div class="lab-img"><img src="https://picsum.photos/seed/phishing-lab/640/400" alt="Lab phishing"><span class="lab-status" data-i18n="labs.online">● EN LIGNE</span></div>
+        <div class="lab-body"><h3 data-i18n="l1.t">Anatomie d'un phishing</h3><p data-i18n="l1.d">Déconstruisez une campagne réelle : headers, URL, pièce jointe piégée, puis construisez votre propre simulation.</p>
+        <div class="lab-meta"><span class="dif"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span><span>~2 H · 250 XP</span></div>
+        <button class="btn btn-sm lab-open" data-lab="Anatomie d'un phishing" data-i18n="labs.open">Ouvrir le lab ▸</button></div></article>
+      <article class="lab-card" data-reveal style="--i:1">
+        <div class="lab-img"><img src="https://picsum.photos/seed/activedir-lab/640/400" alt="Lab Active Directory"><span class="lab-status" data-i18n="labs.online">● EN LIGNE</span></div>
+        <div class="lab-body"><h3 data-i18n="l2.t">Kerberos &amp; Active Directory</h3><p data-i18n="l2.d">Kerberoasting, pass-the-hash, GPO abusives : compromisez un domaine complet, puis corrigez-le.</p>
+        <div class="lab-meta"><span class="dif hot"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span><span>~4 H · 500 XP</span></div>
+        <button class="btn btn-sm lab-open" data-lab="Kerberos & Active Directory" data-i18n="labs.open">Ouvrir le lab ▸</button></div></article>
+      <article class="lab-card" data-reveal style="--i:2">
+        <div class="lab-img"><img src="https://picsum.photos/seed/soc-siem-lab/640/400" alt="Lab SOC"><span class="lab-status" data-i18n="labs.online">● EN LIGNE</span></div>
+        <div class="lab-body"><h3 data-i18n="l3.t">SOC : triage sous pression</h3><p data-i18n="l3.d">50 alertes en 90 minutes dans un SIEM réel. Séparez le bruit de la vraie intrusion, escaladez au bon niveau.</p>
+        <div class="lab-meta"><span class="dif hot"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span><span>~3 H · 400 XP</span></div>
+        <button class="btn btn-sm lab-open" data-lab="SOC : triage sous pression" data-i18n="labs.open">Ouvrir le lab ▸</button></div></article>
+      <article class="lab-card" data-reveal style="--i:3">
+        <div class="lab-img"><img src="https://picsum.photos/seed/forensic-lab/640/400" alt="Lab forensics"><span class="lab-status mnt" data-i18n="labs.mnt">◐ MAINTENANCE</span></div>
+        <div class="lab-body"><h3 data-i18n="l4.t">Autopsie d'un ransomware</h3><p data-i18n="l4.d">Image mémoire, artefacts de persistance, note de rançon : reconstruisez la timeline complète de l'attaque.</p>
+        <div class="lab-meta"><span class="dif ext"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span><span>~5 H · 700 XP</span></div>
+        <button class="btn btn-sm lab-open" data-lab="Autopsie d'un ransomware" data-i18n="labs.open">Ouvrir le lab ▸</button></div></article>
+      <article class="lab-card" data-reveal style="--i:4">
+        <div class="lab-img"><img src="https://picsum.photos/seed/webapp-lab/640/400" alt="Lab web"><span class="lab-status" data-i18n="labs.online">● EN LIGNE</span></div>
+        <div class="lab-body"><h3 data-i18n="l5.t">OWASP Top 10 en pratique</h3><p data-i18n="l5.d">Injection SQL, IDOR, SSRF, désérialisation : une application volontairement fragile, dix vulnérabilités à trouver.</p>
+        <div class="lab-meta"><span class="dif hot"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span><span>~3 H · 450 XP</span></div>
+        <button class="btn btn-sm lab-open" data-lab="OWASP Top 10 en pratique" data-i18n="labs.open">Ouvrir le lab ▸</button></div></article>
+      <article class="lab-card" data-reveal style="--i:5">
+        <div class="lab-img"><img src="https://picsum.photos/seed/crypto-lab/640/400" alt="Lab crypto"><span class="lab-status" data-i18n="labs.online">● EN LIGNE</span></div>
+        <div class="lab-body"><h3 data-i18n="l6.t">Crypto mal implémentée</h3><p data-i18n="l6.d">ECB révélé par images, padding oracle, clés faibles : la théorie cryptographique par la casse.</p>
+        <div class="lab-meta"><span class="dif hot"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span><span>~3 H · 550 XP</span></div>
+        <button class="btn btn-sm lab-open" data-lab="Crypto mal implémentée" data-i18n="labs.open">Ouvrir le lab ▸</button></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="code-sec" id="code">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <div><p class="kicker" data-i18n="code.kicker">03 — Arsenal de code</p>
+        <h2><span class="mask"><span data-i18n="code.h2a">Apprenez les langages</span></span><span class="mask"><span data-i18n="code.h2b">du cyber</span></span></h2></div>
+      <div class="xp-chip"><span data-i18n="code.chip">LANGAGES VALIDÉS :</span> <b id="langCount">0/4</b></div>
+    </div>
+    <div class="code-grid" data-reveal>
+      <div class="lang-tabs" id="langTabs"></div>
+      <div class="code-panel frame">
+        <div class="code-head"><i></i><i></i><i></i><span class="fname" id="codeFile">agent.py</span>
+          <button class="copy-btn" id="copyBtn" data-i18n="code.copy">⧉ Copier</button></div>
+        <p class="lang-desc" id="langDesc"></p>
+        <div class="pills" id="lessonPills"></div>
+        <div class="code-lines" id="codeLines"></div>
+        <div class="code-notes"><h4 data-i18n="code.notes">▸ Ce que fait ce code</h4><ul id="codeNotes"></ul></div>
+        <div class="code-quiz">
+          <p class="q"><b style="color:var(--accent)" data-i18n="code.qlbl">VALIDATION DU LANGAGE ▸</b> <span id="quizQ"></span></p>
+          <div id="langQuiz"></div>
+          <div class="ctf-feedback" id="langQuizFb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ctf" id="defis">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <div><p class="kicker" data-i18n="defis.kicker">04 — Salle d'entraînement</p>
+        <h2><span class="mask"><span data-i18n="defis.h2">Défis immédiats</span></span></h2></div>
+      <div class="xp-chip"><span data-i18n="defis.xp">SCORE XP :</span> <b id="xpVal">0</b></div>
+    </div>
+    <div class="ctf-grid">
+      <div class="ctf-card frame" data-reveal style="--i:0">
+        <h3 data-i18n="c1.t">Défi n°1 — Cryptanalyse</h3>
+        <p class="sub" data-i18n="c1.sub">Chiffrement de César · difficulté ★☆☆ · +100 XP</p>
+        <p style="color:var(--muted);font-size:14px;margin-bottom:14px" data-i18n="c1.desc">Un message intercepté a été chiffré par décalage. Retrouvez le texte clair :</p>
+        <div class="cipher-box">ELHQYHQXH</div>
+        <div class="ctf-row">
+          <input type="text" id="caesarIn" data-i18n-ph="c1.ph" placeholder="VOTRE RÉPONSE..." autocomplete="off">
+          <button class="btn btn-sm" id="caesarBtn" data-i18n="c1.btn">Décrypter</button>
+          <button class="btn btn-sm" id="caesarHint" style="color:var(--warn);border-color:var(--line2)" data-i18n="c1.hint">Indice</button>
+        </div>
+        <div class="ctf-feedback" id="caesarFb"></div>
+      </div>
+      <div class="ctf-card frame" data-reveal style="--i:1">
+        <h3 data-i18n="c2.t">Défi n°2 — Ingénierie sociale</h3>
+        <p class="sub" data-i18n="c2.sub">Analyse de menace · difficulté ★☆☆ · +100 XP</p>
+        <p style="color:var(--muted);font-size:14px;margin-bottom:14px" data-i18n="c2.q">Vous recevez un e-mail de « PayPal ». Quel indice trahit le plus sûrement une tentative de phishing ?</p>
+        <button class="quiz-opt qz" data-good="0" data-i18n="c2.a">A — Un objet alarmant : « Votre compte sera suspendu sous 24 h »</button>
+        <button class="quiz-opt qz" data-good="1" data-i18n="c2.b">B — Un domaine expéditeur quasi identique : service@paypa1-secure.com</button>
+        <button class="quiz-opt qz" data-good="0" data-i18n="c2.c">C — Une pièce jointe au format PDF</button>
+        <button class="quiz-opt qz" data-good="0" data-i18n="c2.d">D — Le logo officiel en signature</button>
+        <div class="ctf-feedback" id="quizFb"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="warroom">
+  <div class="warroom-bg"><img src="https://picsum.photos/seed/cyber-grid-warroom/1600/900" alt=""></div>
+  <div class="wrap">
+    <div class="big-stats frame" data-reveal>
+      <div><div class="n" data-count="680">0</div><div class="l" data-i18n="war.s1">Entreprises partenaires</div></div>
+      <div><div class="n" data-count="37">0</div><div class="l" data-i18n="war.s2">Pays représentés</div></div>
+      <div><div class="n" data-count="2900">0</div><div class="l" data-i18n="war.s3">Heures de labs / mois</div></div>
+      <div><div class="n" data-count="12">0</div><div class="l" data-i18n="war.s4">CTF organisés / an</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="formateurs" id="formateurs">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <div><p class="kicker" data-i18n="team.kicker">05 — État-major pédagogique</p>
+        <h2><span class="mask"><span data-i18n="team.h2">Formés par des opérationnels</span></span></h2></div>
+      <p class="sub" data-i18n="team.sub">Pas de formateurs « de scène » : chaque instructeur exerce ou a exercé sur le terrain, en offensive comme en défense.</p>
+    </div>
+    <div class="team-grid">
+      <article class="team-card" data-reveal style="--i:0"><div class="ph"><img src="https://picsum.photos/seed/formateur-nadia/480/560" alt="Nadia Belkacem"></div>
+        <div class="team-info"><h3>Nadia Belkacem</h3><div class="role" data-i18n="team.r1">PENTESTEUSE · EX-ANSSI</div>
+        <p class="bio" data-i18n="team.b1">8 ans d'audits offensifs pour OIV et secteur bancaire. Spécialiste Active Directory et évasion EDR.</p>
+        <div class="certs"><span class="cert">OSCP</span><span class="cert">OSEP</span><span class="cert">CRTO</span></div></div></article>
+      <article class="team-card" data-reveal style="--i:1"><div class="ph"><img src="https://picsum.photos/seed/formateur-thomas/480/560" alt="Thomas Roche"></div>
+        <div class="team-info"><h3>Thomas Roche</h3><div class="role" data-i18n="team.r2">LEAD SOC · RÉPONSE À INCIDENT</div>
+        <p class="bio" data-i18n="team.b2">10 ans de gestion d'incidents majeurs, dont 3 crises ransomware. Construit les scénarios de triage.</p>
+        <div class="certs"><span class="cert">GCIH</span><span class="cert">GCIA</span><span class="cert">AZ-500</span></div></div></article>
+      <article class="team-card" data-reveal style="--i:2"><div class="ph"><img src="https://picsum.photos/seed/formatrice-awa/480/560" alt="Awa Diallo"></div>
+        <div class="team-info"><h3>Awa Diallo</h3><div class="role" data-i18n="team.r3">CISO · GOUVERNANCE &amp; RISQUES</div>
+        <p class="bio" data-i18n="team.b3">RSSI d'un groupe industriel européen. Enseigne la conformité sans jargon : ISO 27001, NIS2, DORA.</p>
+        <div class="certs"><span class="cert">CISSP</span><span class="cert">CISM</span><span class="cert">ISO 27001 LA</span></div></div></article>
+      <article class="team-card" data-reveal style="--i:3"><div class="ph"><img src="https://picsum.photos/seed/formateur-marc/480/560" alt="Marc Keller"></div>
+        <div class="team-info"><h3>Marc Keller</h3><div class="role" data-i18n="team.r4">MALWARE ANALYST · REVERSE</div>
+        <p class="bio" data-i18n="team.b4">Traque les familles de ransomwares depuis 2017. Anime le lab d'autopsie et le club de rétro-ingénierie.</p>
+        <div class="certs"><span class="cert">GREM</span><span class="cert">eCRE</span><span class="cert">OSED</span></div></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="tarifs" id="tarifs">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <div><p class="kicker" data-i18n="tar.kicker">06 — Niveaux d'accréditation</p>
+        <h2><span class="mask"><span data-i18n="tar.h2">Choisissez votre clearance</span></span></h2></div>
+      <div class="toggle" id="billToggle">
+        <span class="on" id="lblMonthly" data-i18n="tar.m">Mensuel</span>
+        <div class="sw" id="swToggle" role="switch" aria-checked="false" tabindex="0"><i></i></div>
+        <span id="lblYearly" data-i18n="tar.y">Annuel <span style="color:var(--warn)">−20 %</span></span>
+      </div>
+    </div>
+    <div class="plans">
+      <div class="plan" data-reveal style="--i:0">
+        <h3 data-i18n="p1.n">Sentinelle</h3><p class="pdesc" data-i18n="p1.d">Reconnaissance du terrain.</p>
+        <div class="price">0 € <small data-i18n="tar.per">/ mois</small></div>
+        <ul><li data-i18n="p1.f1">Module 01 complet — Fondations</li><li data-i18n="p1.f2">3 labs découverte</li><li data-i18n="p1.f3">Communauté &amp; défis hebdo</li><li class="no" data-i18n="p1.f4">Mentorat individuel</li><li class="no" data-i18n="p1.f5">Préparation certifications</li><li class="no" data-i18n="p1.f6">Accès entreprise</li></ul>
+        <a href="#inscription" class="btn" data-i18n="p1.btn">Créer un accès</a></div>
+      <div class="plan featured frame" data-reveal style="--i:1">
+        <span class="badge" data-i18n="p2.badge">RECOMMANDÉ PAR L'ÉTAT-MAJOR</span>
+        <h3 data-i18n="p2.n">Opérateur</h3><p class="pdesc" data-i18n="p2.d">Le parcours complet, encadré.</p>
+        <div class="price"><span class="pv" data-m="49" data-y="39">49</span> € <small data-i18n="tar.per">/ mois</small></div>
+        <ul><li data-i18n="p2.f1">6 modules + 324 leçons</li><li data-i18n="p2.f2">180 labs en sandbox illimités</li><li data-i18n="p2.f3">Mentorat hebdomadaire en visio</li><li data-i18n="p2.f4">Prépa CEH, Security+, BTL1</li><li data-i18n="p2.f5">Projets notés sur cas réels</li><li class="no" data-i18n="p2.f6">Accès entreprise multi-postes</li></ul>
+        <a href="#inscription" class="btn btn-primary" data-i18n="p2.btn">S'enrôler ▸</a></div>
+      <div class="plan" data-reveal style="--i:2">
+        <h3 data-i18n="p3.n">Élite</h3><p class="pdesc" data-i18n="p3.d">Pour les équipes &amp; les ambitieux.</p>
+        <div class="price"><span class="pv" data-m="149" data-y="119">149</span> € <small data-i18n="tar.per">/ mois</small></div>
+        <ul><li data-i18n="p3.f1">Tout Opérateur, plus :</li><li data-i18n="p3.f2">Red Team avancée &amp; C2</li><li data-i18n="p3.f3">CTF privés mensuels classés</li><li data-i18n="p3.f4">Prépa OSCP / OSEP incluse</li><li data-i18n="p3.f5">Coaching carrière &amp; placement</li><li data-i18n="p3.f6">Licence entreprise jusqu'à 10 postes</li></ul>
+        <a href="#inscription" class="btn" data-i18n="p3.btn">Contacter le commandement</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="temoin">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <div><p class="kicker" data-i18n="tem.kicker">07 — Transmissions reçues</p>
+        <h2><span class="mask"><span data-i18n="tem.h2">Ils ont changé de camp</span></span></h2></div>
+    </div>
+    <div class="tcards" data-reveal>
+      <div class="tcard"><q data-i18n="tem1.q">Je suis passée d'un master de droit à analyste SOC en 9 mois. Le module triage sous pression m'a littéralement préparée à ma première semaine en poste.</q><div class="who" data-i18n="tem1.w">CLAIRE M.<span>Analyste SOC — ESN, Lyon · Promo 2025</span></div></div>
+      <div class="tcard"><q data-i18n="tem2.q">Les labs sont d'un réalisme brutal, dans le bon sens. Le jour de mon entretien OSCP, rien ne m'a surpris : j'avais déjà tout cassé ici.</q><div class="who" data-i18n="tem2.w">YASSINE B.<span>Pentester junior — cabinet d'audit, Paris · Promo 2024</span></div></div>
+      <div class="tcard"><q data-i18n="tem3.q">On a inscrit toute l'équipe infra au plan Élite. Trois mois plus tard, on détectait nous-mêmes une compromission que notre prestataire avait manquée.</q><div class="who" data-i18n="tem3.w">SOPHIE R.<span>Responsable IT — industriel, Nantes · Plan Élite</span></div></div>
+      <div class="tcard"><q data-i18n="tem4.q">Les leçons Python et Batch m'ont permis d'automatiser mes premiers scripts de diagnostic dès la semaine 2. Concret, direct, sans blabla.</q><div class="who" data-i18n="tem4.w">DAVID T.<span>Consultant sécurité — Big Four · Promo 2025</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div style="text-align:center" data-reveal>
+      <p class="kicker" data-i18n="faq.kicker">08 — Questions de recrues</p>
+      <h2><span class="mask"><span data-i18n="faq.h2">Tout ce qu'on nous demande</span></span></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item" data-reveal style="--i:0"><button class="faq-q"><span data-i18n="fq1">Puis-je débuter sans aucun bagage technique ?</span><span class="ic">+</span></button>
+      <div class="faq-a"><p data-i18n="fa1">Oui. Le module 01 remet tout à plat — réseaux, Linux, ligne de commande — et l'arsenal de code démarre de zéro en Python, C, Batch et JavaScript. 38 % de nos stagiaires n'avaient aucune expérience en informatique à l'entrée.</p></div></div>
+      <div class="faq-item" data-reveal style="--i:1"><button class="faq-q"><span data-i18n="fq2">Quel matériel est nécessaire ?</span><span class="ic">+</span></button>
+      <div class="faq-a"><p data-i18n="fa2">Un ordinateur avec 8 Go de RAM et un navigateur moderne suffit : tous les laboratoires tournent dans nos sandboxes distantes, accessibles 24/7. Aucune installation de machine virtuelle n'est requise.</p></div></div>
+      <div class="faq-item" data-reveal style="--i:2"><button class="faq-q"><span data-i18n="fq3">Pourquoi apprendre le C et le Batch en cybersécurité ?</span><span class="ic">+</span></button>
+      <div class="faq-a"><p data-i18n="fa3">Le C est le langage des systèmes et des binaires : indispensable pour comprendre la mémoire, les exploits et le reverse engineering. Le Batch reste partout dans Windows et dans les scripts d'administration — et donc, dans les attaques qui les visent.</p></div></div>
+      <div class="faq-item" data-reveal style="--i:3"><button class="faq-q"><span data-i18n="fq4">La formation prépare-t-elle à des certifications reconnues ?</span><span class="ic">+</span></button>
+      <div class="faq-a"><p data-i18n="fa4">Oui : les parcours s'alignent sur les référentiels CompTIA Security+, CEH, BTL1 et, pour le plan Élite, OSCP/OSEP. 94 % de nos candidats certifiables obtiennent leur certification du premier coup.</p></div></div>
+      <div class="faq-item" data-reveal style="--i:4"><button class="faq-q"><span data-i18n="fq5">Peut-on suivre la formation en travaillant à côté ?</span><span class="ic">+</span></button>
+      <div class="faq-a"><p data-i18n="fa5">Le format est conçu pour 10 à 15 heures par semaine, entièrement asynchrone, avec des sessions de mentorat en soirée. La durée indicative de 44 semaines s'étire ou se comprime selon votre disponibilité.</p></div></div>
+      <div class="faq-item" data-reveal style="--i:5"><button class="faq-q"><span data-i18n="fq6">La formation est-elle finançable (CPF, OPCO, entreprise) ?</span><span class="ic">+</span></button>
+      <div class="faq-a"><p data-i18n="fa6">Oui, notre organisme est certifié Qualiopi : le parcours Opérateur est éligible au CPF et finançable par les OPCO. Notre équipe monte le dossier avec vous sous 72 h.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="inscription" id="inscription">
+  <div class="wrap ins-grid">
+    <div data-reveal>
+      <p class="kicker" data-i18n="ins.kicker">09 — Enrôlement</p>
+      <h2><span class="mask"><span data-i18n="ins.h2a">Rejoignez</span></span><span class="mask"><span data-i18n="ins.h2b">TJ CYBER 2026</span></span></h2>
+      <p style="color:var(--muted);margin-top:18px;max-width:440px" data-i18n="ins.desc">Prochaine session : <b style="color:var(--txt)">5 janvier 2026</b>. Places limitées à 120 recrues pour garantir le mentorat individuel. Créez votre accès invité — gratuit, sans engagement.</p>
+      <div class="legend frame" style="margin-top:26px;max-width:440px">
+        <div><span data-i18n="ins.l1">PLACES DISPONIBLES</span><span class="v">23 / 120</span></div>
+        <div><span data-i18n="ins.l2">CLÔTURE DES INSCRIPTIONS</span><span class="v" data-i18n="ins.l2v">22 DÉC. 2026</span></div>
+        <div><span data-i18n="ins.l3">GARANTIE</span><span class="v" data-i18n="ins.l3v">14 JOURS SATISFAIT OU REMBOURSÉ</span></div>
+      </div>
+    </div>
+    <form class="ins-form frame" id="enrollForm" novalidate data-reveal style="--i:1">
+      <div class="fgroup"><label for="fName" data-i18n="form.name">Identité complète *</label>
+        <input type="text" id="fName" placeholder="Ex. : Jeanne Dupont"><div class="ferr" id="eName"></div></div>
+      <div class="fgroup"><label for="fMail" data-i18n="form.mail">Adresse e-mail *</label>
+        <input type="email" id="fMail" placeholder="vous@domaine.fr"><div class="ferr" id="eMail"></div></div>
+      <div class="fgroup"><label for="fTrack" data-i18n="form.track">Parcours visé</label>
+        <select id="fTrack">
+          <option data-i18n="opt.t1">Opérateur — parcours complet</option>
+          <option data-i18n="opt.t2">Sentinelle — découverte gratuite</option>
+          <option data-i18n="opt.t3">Élite — Red Team &amp; certifications</option>
+          <option data-i18n="opt.t4">Je ne sais pas encore (orientation)</option>
+        </select></div>
+      <div class="fgroup"><label for="fLevel" data-i18n="form.level">Niveau actuel</label>
+        <select id="fLevel">
+          <option data-i18n="opt.l1">Débutant complet</option>
+          <option data-i18n="opt.l2">Notions en informatique</option>
+          <option data-i18n="opt.l3">Intermédiaire</option>
+          <option data-i18n="opt.l4">Déjà en poste dans l'IT</option>
+        </select></div>
+      <button type="submit" class="btn btn-primary" style="width:100%" data-i18n="form.submit">Transmettre la demande ▸</button>
+      <div class="ins-success" id="insOk" data-i18n="form.ok">✔ TRANSMISSION REÇUE — vérifiez votre boîte mail, votre accès invité arrive dans quelques minutes. Bienvenue à bord, recrue.</div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="#" class="logo"><span class="logo-badge">TJ</span>CYBER<span class="sep">//</span></a>
+        <p class="foot-desc" data-i18n="foot.desc">Académie indépendante de cybersécurité fondée en 2019. Formations certifiantes Qualiopi, laboratoires isolés, académie de code et instructeurs opérationnels.</p>
+      </div>
+      <div><h4 data-i18n="foot.nav">Navigation</h4><a class="fl" href="#parcours" data-i18n="nav.parcours">Parcours</a><a class="fl" href="#labs" data-i18n="nav.labs">Labs</a><a class="fl" href="#code" data-i18n="fl.code">Arsenal de code</a><a class="fl" href="#defis" data-i18n="nav.defis">Défis</a><a class="fl" href="#tarifs" data-i18n="nav.pricing">Tarifs</a></div>
+      <div><h4 data-i18n="foot.res">Ressources</h4><a class="fl" href="#" data-soon data-i18n="fl.blog">Blog threat intel</a><a class="fl" href="#" data-soon data-i18n="fl.pod">Podcast « Zero Day »</a><a class="fl" href="#" data-soon data-i18n="fl.glo">Glossaire cyber</a><a class="fl" href="#" data-soon data-i18n="fl.gui">Guides certifications</a></div>
+      <div><h4 data-i18n="foot.legal">Légal</h4><a class="fl" href="#" data-legal data-i18n="fl.ment">Mentions légales</a><a class="fl" href="#" data-legal data-i18n="fl.priv">Politique de confidentialité</a><a class="fl" href="#" data-soon data-i18n="fl.cgv">CGV</a><a class="fl" href="#" data-soon data-i18n="fl.chart">Charte d'usage éthique</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 TJ CYBER ACADEMY — <span data-i18n="foot.right">TOUS DROITS RÉSERVÉS</span></span>
+      <span><span class="dot"></span><span data-i18n="foot.sys">TOUS LES SYSTÈMES SONT OPÉRATIONNELS</span></span>
+      <span>BUILD 6.0.0 · PARIS / LYON / DISTANT</span>
+    </div>
+  </div>
+</footer>
+</div>
+
+<!-- ============ MODALS ============ -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal frame">
+    <button class="modal-close" data-close="authModal">✕</button>
+    <p class="kicker" data-i18n="auth.kicker">Accréditation</p>
+    <div class="auth-tabs">
+      <button id="tabLogin" class="on" data-i18n="auth.tab.login">Connexion</button>
+      <button id="tabSignup" data-i18n="auth.tab.signup">Inscription</button>
+    </div>
+    <form id="loginForm" novalidate>
+      <div class="fgroup"><label data-i18n="auth.user">Identifiant ou e-mail</label><input type="text" id="liUser"><div class="ferr" id="liUserE"></div></div>
+      <div class="fgroup"><label data-i18n="auth.pwd">Mot de passe</label><input type="password" id="liPwd"><div class="ferr" id="liPwdE"></div></div>
+      <button type="submit" class="btn btn-primary" style="width:100%" data-i18n="auth.loginbtn">Se connecter ▸</button>
+    </form>
+    <form id="signupForm" novalidate style="display:none">
+      <div class="fgroup"><label data-i18n="auth.name">Nom complet</label><input type="text" id="suName"><div class="ferr" id="suNameE"></div></div>
+      <div class="fgroup"><label data-i18n="auth.user">Identifiant ou e-mail</label><input type="text" id="suUser"><div class="ferr" id="suUserE"></div></div>
+      <div class="fgroup"><label data-i18n="auth.pwd">Mot de passe</label><input type="password" id="suPwd"><div class="ferr" id="suPwdE"></div></div>
+      <div class="fgroup"><label data-i18n="auth.pwd2">Confirmer le mot de passe</label><input type="password" id="suPwd2"><div class="ferr" id="suPwd2E"></div></div>
+      <button type="submit" class="btn btn-primary" style="width:100%" data-i18n="auth.signupbtn">Créer mon accès ▸</button>
+    </form>
+    <div class="ctf-feedback" id="authFb"></div>
+    <p class="auth-note" data-i18n="auth.note">🔒 Mot de passe hashé (SHA-256) — démo pédagogique : toutes les données restent dans votre navigateur.</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="dashModal">
+  <div class="modal wide frame">
+    <button class="modal-close" data-close="dashModal">✕</button>
+    <p class="kicker" data-i18n="dash.kicker">Espace membre</p>
+    <h2 style="font-size:26px" data-i18n="dash.title">Tableau de bord</h2>
+    <div style="font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:12px">
+      <span data-i18n="dash.agent">AGENT</span> : <b id="dashUser" style="color:var(--accent)"></b> · <span data-i18n="dash.clear">CLEARANCE</span> : <b id="dashClr" style="color:var(--accent)"></b>
+    </div>
+    <div class="dash-grid">
+      <div class="dash-cell"><div class="dv" id="dashXp">0</div><div class="dl" data-i18n="dash.xp">XP TOTAL</div></div>
+      <div class="dash-cell"><div class="dv" id="dashLang">0/4</div><div class="dl" data-i18n="dash.lang">LANGAGES VALIDÉS</div></div>
+      <div class="dash-cell"><div class="dv" id="dashChal">0/2</div><div class="dl" data-i18n="dash.chal">DÉFIS RÉUSSIS</div></div>
+      <div class="dash-cell"><div class="dv" id="dashProg">0%</div><div class="dl" data-i18n="dash.prog">PROGRESSION GLOBALE</div></div>
+    </div>
+    <p style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:10px" data-i18n="dash.badges">Badges</p>
+    <div id="dashBadges"></div>
+    <p class="auth-note" data-i18n="dash.note">Données stockées localement — démo pédagogique sans serveur.</p>
+    <div style="display:flex;gap:12px;margin-top:22px;flex-wrap:wrap">
+      <button class="btn btn-primary" data-close="dashModal" data-i18n="dash.cont">Continuer l'entraînement ▸</button>
+      <button class="btn" id="dashLogout" data-i18n="dash.logout">Déconnexion</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="legalModal">
+  <div class="modal wide frame">
+    <button class="modal-close" data-close="legalModal">✕</button>
+    <p class="kicker" data-i18n="legal.kicker">Informations légales</p>
+    <div id="legalBody"></div>
+  </div>
+</div>
+
+<div id="toasts"></div>
+
+<script>
+(function(){
+"use strict";
+const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
+const REDUCED=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const THEMES={VERT:'GREEN',VIOLET:'VIOLET',ROUGE:'RED',JAUNE:'YELLOW'};
+
+const PALETTE=[{name:'VERT',rgb:[46,255,154]},{name:'VIOLET',rgb:[180,92,255]},{name:'ROUGE',rgb:[255,77,94]},{name:'JAUNE',rgb:[255,197,61]}];
+const HOLD=3800,FADE=1400;
+let pIdx=0,curRGB=PALETTE[0].rgb.slice(),fromRGB=curRGB.slice(),toRGB=curRGB.slice(),accentStr='46,255,154';
+let mode=REDUCED?'lock':'auto',phase='hold',phaseStart=performance.now();
+const root=document.documentElement.style;
+function applyRGB(rgb){curRGB=rgb.slice();accentStr=rgb.map(Math.round).join(',');
+ root.setProperty('--accent','rgb('+accentStr+')');
+ root.setProperty('--accent-dim','rgba('+accentStr+',.09)');
+ root.setProperty('--accent-glow','rgba('+accentStr+',.4)');
+ root.setProperty('--accent-soft','rgba('+accentStr+',.6)');
+ root.setProperty('--scan-glow','rgba('+accentStr+',.05)');
+ root.setProperty('--grid-line','rgba('+accentStr+',.055)');}
+function ease(p){return p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2}
+function lerp(a,b,p){return [a[0]+(b[0]-a[0])*p,a[1]+(b[1]-a[1])*p,a[2]+(b[2]-a[2])*p]}
+function palName(i){const n=PALETTE[i].name;return curLang==='fr'?n:(THEMES[n]||n)}
+function palFrame(now){if(mode!=='auto')return;
+ const el=now-phaseStart;
+ if(phase==='hold'){if(el>=HOLD){pIdx=(pIdx+1)%PALETTE.length;fromRGB=curRGB.slice();toRGB=PALETTE[pIdx].rgb;
+  $('#themeName').textContent=palName(pIdx);
+  if(REDUCED){applyRGB(toRGB);phaseStart=now}else{phase='fade';phaseStart=now}}}
+ else{const p=Math.min(el/FADE,1);applyRGB(lerp(fromRGB,toRGB,ease(p)));if(p>=1){phase='hold';phaseStart=now}}
+ requestAnimationFrame(palFrame);}
+applyRGB(PALETTE[0].rgb);
+if(!REDUCED)requestAnimationFrame(palFrame);
+
+const cv=$('#bgfx'),ctx=cv.getContext('2d');let W=0,H=0,drops=[],tiles=[],lastRain=0,lastTile=0;
+const GLY='01ABCDEF#$%&<>{}';const TILE=48;
+function sizeFx(){W=innerWidth;H=innerHeight;cv.width=W;cv.height=H;
+ const cols=Math.floor(W/14);drops=Array.from({length:cols},()=>Math.random()*H);}
+sizeFx();addEventListener('resize',sizeFx);
+function fx(ts){
+ if(ts-lastRain>50){lastRain=ts;
+  ctx.globalCompositeOperation='destination-out';
+  ctx.fillStyle='rgba(0,0,0,.13)';ctx.fillRect(0,0,W,H);
+  ctx.globalCompositeOperation='source-over';
+  ctx.font='13px "IBM Plex Mono",monospace';
+  for(let i=0;i<drops.length;i++){
+   const ch=GLY[Math.random()*GLY.length|0];
+   ctx.fillStyle=Math.random()<.07?'rgba('+accentStr+',.9)':'rgba('+accentStr+',.45)';
+   ctx.fillText(ch,i*14,drops[i]);
+   drops[i]+=14;if(drops[i]>H+Math.random()*300)drops[i]=-30;}}
+ if(ts-lastTile>600){lastTile=ts;
+  tiles.push({x:(Math.random()*Math.floor(W/TILE)|0)*TILE,y:(Math.random()*Math.floor(H/TILE)|0)*TILE,life:1});
+  if(tiles.length>14)tiles.shift();}
+ for(let i=tiles.length-1;i>=0;i--){const t=tiles[i];
+  ctx.strokeStyle='rgba('+accentStr+','+(t.life*.55)+')';
+  ctx.fillStyle='rgba('+accentStr+','+(t.life*.09)+')';
+  ctx.lineWidth=1;ctx.strokeRect(t.x+1,t.y+1,TILE-2,TILE-2);ctx.fillRect(t.x+1,t.y+1,TILE-2,TILE-2);
+  t.life-=.018;if(t.life<=0)tiles.splice(i,1);}
+ requestAnimationFrame(fx);}
+if(!REDUCED)requestAnimationFrame(fx);
+
+const FR={
+'doc.title':'TJ CYBER — Académie Cybersécurité',
+'top.status':'SYSTÈME OPÉRATIONNEL','top.time':'HEURE LOCALE','top.alert':'NIVEAU D\u2019ALERTE','top.alertv':'VEILLE','top.crypt':'CHIFFREMENT : AES-256','top.palette':'PALETTE :',
+'nav.parcours':'Parcours','nav.labs':'Labs','nav.code':'Code','nav.defis':'Défis','nav.team':'Formateurs','nav.pricing':'Tarifs','nav.faq':'FAQ','nav.enroll':'S\u2019enrôler','nav.login':'Se connecter','nav.logout':'Déconnexion',
+'hero.kicker':'Académie de cyberdéfense — Promotion 2026 ouverte',
+'hero.h1a':'PENSEZ COMME','hero.h1b':'L\u2019ATTAQUANT.','hero.h1c':'DÉFENDEZ MIEUX.',
+'hero.lead':'Formations intensives en cybersécurité : <b>pentest, réponse à incident, SOC, cryptographie</b> — et notre <b>académie de code</b> pour maîtriser <b>Python, C, Batch et JavaScript</b>. Des laboratoires isolés, des scénarios réels, un encadrement par des opérationnels.',
+'hero.cta1':'Commencer la formation ▸','hero.cta2':'Apprendre à coder',
+'hero.s1':'Stagiaires formés','hero.s2':'Labs isolés','hero.s3':'Réussite certifs',
+'tick.1':'RCE à distance — appliance pare-feu','tick.2':'Nouvelles leçons Python · C · Batch · JS disponibles','tick.3':'Élévation de privilèges noyau Linux 6.x','tick.4':'Campagne phishing ciblant le secteur bancaire','tick.5':'Désérialisation non sécurisée — API REST','tick.6':'Compromission chaîne npm « loglib-core »','tick.7':'Contournement 2FA par SIM swapping','tick.8':'Fuite de secrets CI/CD — dépôt public',
+'sev.crit':'CRITIQUE','sev.high':'HAUTE','sev.med':'MOYENNE','sev.new':'NOUVEAU','sev.act':'ACTIVE',
+'t.b1':'[OK] Noyau pédagogique v5.0 chargé','t.b2':'[OK] Laboratoires sandbox montés (180 nœuds)','t.b3':'[OK] Académie de code : Python · C · Batch · JS','t.bw':'[WARN] 3 lacunes détectées dans votre posture — correction possible','t.bwho':'> visiteur — clearance niveau 0. Tapez « help » pour explorer.',
+'t.help':'Commandes : help · whoami · scan · modules · code · enroll · clear · sudo','t.who':'> visiteur — clearance 0. Objectif : devenir analyste ou pentester.','t.code':'> Arsenal de code localisé : Python, C, Batch, JavaScript.','t.scan0':'Scan 10.10.14.7 en cours ...','t.scanF':'filtré par nos soins','t.scanOk':'> 3 ports analysés en 0.42 s. Vous apprenez vite.','t.enroll':'> Formulaire d\u2019enrôlement localisé. Descendez, recrue.','t.sudo':'Permission refusée. Ici, on apprend avant de casser.','t.nf':'commande introuvable : {c} — tapez « help »',
+'parc.kicker':'01 — Parcours certifiants','parc.h2a':'Le protocole','parc.h2b':'de formation',
+'parc.desc':'Six modules progressifs, du socle technique à l\u2019offensive avancée. Chaque module combine théorie, labs en sandbox et évaluations notées. Validez les six pour obtenir le diplôme TJ CYBER et préparer les certifications du marché.',
+'lg.dur':'DURÉE TOTALE','lg.durv':'44 SEMAINES','lg.les':'LEÇONS','lg.lab':'LABS PRATIQUES','lg.men':'MENTORAT','lg.menv':'1 SESSION / SEMAINE','lg.out':'SORTIE','parc.bro':'Télécharger la brochure ▸',
+'tag.deb':'Débutant','tag.int':'Intermédiaire','tag.adv':'Avancé','tag.net':'Réseaux','tag.eva':'Évasion',
+'m1.t':'Fondations sécurité','m1.d':'Réseaux TCP/IP, administration Linux, modèles de menace et hygiène cryptographique. Le socle non négociable.','m1.dur':'DURÉE <b>6 sem.</b>',
+'m2.t':'Hacking éthique &amp; pentest','m2.d':'Reconnaissance, énumération, exploitation et rédaction de rapports professionnels. Boîte à outils Kali &amp; Burp.','m2.dur':'DURÉE <b>8 sem.</b>',
+'m3.t':'SOC Analyst &amp; défense active','m3.d':'SIEM, détection, triage d\u2019alertes, durcissement et threat hunting. Le quotidien réel d\u2019un centre opérationnel.','m3.dur':'DURÉE <b>8 sem.</b>',
+'m4.t':'Forensics &amp; réponse à incident','m4.d':'Analyse mémoire, disques et journaux, chaîne de custody, gestion de crise et communication post-incident.','m4.dur':'DURÉE <b>6 sem.</b>',
+'m5.t':'Red Team avancée','m5.d':'Évasion de défenses, mouvement latéral, C2, émulation d\u2019adversaires réels (TTP MITRE ATT&amp;CK).','m5.dur':'DURÉE <b>10 sem.</b>',
+'m6.t':'Cryptographie &amp; DevSecOps','m6.d':'Crypto appliquée, PKI, sécurité CI/CD, secrets, conteneurs et cloud. Sécuriser ce que l\u2019on construit.','m6.dur':'DURÉE <b>6 sem.</b>',
+'m.les':'LEÇONS <b>42</b>','m2.les':'LEÇONS <b>56</b>','m3.les':'LEÇONS <b>61</b>','m4.les':'LEÇONS <b>48</b>','m5.les':'LEÇONS <b>70</b>','m6.les':'LEÇONS <b>47</b>',
+'labs.kicker':'02 — Laboratoires live','labs.h2':'Entraînement en sandbox','labs.sub':'Machines vulnérables éphémères, réseaux d\u2019entreprise reconstitués, malware inoffensifs mais réalistes. Chaque lab est chronométré et noté.','labs.online':'● EN LIGNE','labs.mnt':'◐ MAINTENANCE','labs.open':'Ouvrir le lab ▸',
+'l1.t':'Anatomie d\u2019un phishing','l1.d':'Déconstruisez une campagne réelle : headers, URL, pièce jointe piégée, puis construisez votre propre simulation.',
+'l2.t':'Kerberos &amp; Active Directory','l2.d':'Kerberoasting, pass-the-hash, GPO abusives : compromisez un domaine complet, puis corrigez-le.',
+'l3.t':'SOC : triage sous pression','l3.d':'50 alertes en 90 minutes dans un SIEM réel. Séparez le bruit de la vraie intrusion, escaladez au bon niveau.',
+'l4.t':'Autopsie d\u2019un ransomware','l4.d':'Image mémoire, artefacts de persistance, note de rançon : reconstruisez la timeline complète de l\u2019attaque.',
+'l5.t':'OWASP Top 10 en pratique','l5.d':'Injection SQL, IDOR, SSRF, désérialisation : une application volontairement fragile, dix vulnérabilités à trouver.',
+'l6.t':'Crypto mal implémentée','l6.d':'ECB révélé par images, padding oracle, clés faibles : la théorie cryptographique par la casse.',
+'toast.lab.ok':'▸ Connexion sécurisée au lab « {n} » — sandbox attribuée.','toast.lab.mnt':'⚠ {n} — maintenance en cours, réouverture à 22:00 UTC.',
+'code.kicker':'03 — Arsenal de code','code.h2a':'Apprenez les langages','code.h2b':'du cyber','code.chip':'LANGAGES VALIDÉS :','code.copy':'⧉ Copier','code.notes':'▸ Ce que fait ce code','code.qlbl':'VALIDATION DU LANGAGE ▸',
+'code.good':'> Correct. ','code.bad':'> Raté — relisez la leçon et retentez.','code.done':'> Déjà validé ✓ — ','code.all':'★ ARSENAL COMPLET — 4/4 langages validés. Vous êtes paré·e pour les labs.',
+'toast.copy':'▸ Code copié dans le presse-papiers.','toast.copyfail':'⚠ Copie impossible sur ce navigateur.',
+'defis.kicker':'04 — Salle d\u2019entraînement','defis.h2':'Défis immédiats','defis.xp':'SCORE XP :','toast.xp':'XP acquis · score total : ',
+'c1.t':'Défi n°1 — Cryptanalyse','c1.sub':'Chiffrement de César · difficulté ★☆☆ · +100 XP','c1.desc':'Un message intercepté a été chiffré par décalage. Retrouvez le texte clair :','c1.ph':'VOTRE RÉPONSE...','c1.btn':'Décrypter','c1.hint':'Indice',
+'c1.ok':'> Décrypté : BIENVENUE. Décalage +3 — bien joué, recrue.','c1.no':'> Réponse rejetée. Réessayez — le décalage est constant.','c1.hint.msg':'> INDICE : chiffrement de César, décalage +3. Décalez chaque lettre de 3 vers la gauche.',
+'c2.t':'Défi n°2 — Ingénierie sociale','c2.sub':'Analyse de menace · difficulté ★☆☆ · +100 XP','c2.q':'Vous recevez un e-mail de « PayPal ». Quel indice trahit le plus sûrement une tentative de phishing ?',
+'c2.a':'A — Un objet alarmant : « Votre compte sera suspendu sous 24 h »','c2.b':'B — Un domaine expéditeur quasi identique : service@paypa1-secure.com','c2.c':'C — Une pièce jointe au format PDF','c2.d':'D — Le logo officiel en signature',
+'c2.ok':'> Correct. Un domaine quasi identique (typosquatting) est l\u2019indice le plus fiable : le reste se falsifie.','c2.no':'> Piégé·e ! Réponse B : paypa1-secure.com usurpe le domaine légitime. Objets alarmants et logos se copient, pas un domaine validé.',
+'war.s1':'Entreprises partenaires','war.s2':'Pays représentés','war.s3':'Heures de labs / mois','war.s4':'CTF organisés / an',
+'team.kicker':'05 — État-major pédagogique','team.h2':'Formés par des opérationnels','team.sub':'Pas de formateurs « de scène » : chaque instructeur exerce ou a exercé sur le terrain, en offensive comme en défense.',
+'team.r1':'PENTESTEUSE · EX-ANSSI','team.b1':'8 ans d\u2019audits offensifs pour OIV et secteur bancaire. Spécialiste Active Directory et évasion EDR.',
+'team.r2':'LEAD SOC · RÉPONSE À INCIDENT','team.b2':'10 ans de gestion d\u2019incidents majeurs, dont 3 crises ransomware. Construit les scénarios de triage.',
+'team.r3':'CISO · GOUVERNANCE &amp; RISQUES','team.b3':'RSSI d\u2019un groupe industriel européen. Enseigne la conformité sans jargon : ISO 27001, NIS2, DORA.',
+'team.r4':'MALWARE ANALYST · REVERSE','team.b4':'Traque les familles de ransomwares depuis 2017. Anime le lab d\u2019autopsie et le club de rétro-ingénierie.',
+'tar.kicker':'06 — Niveaux d\u2019accréditation','tar.h2':'Choisissez votre clearance','tar.m':'Mensuel','tar.y':'Annuel <span style="color:var(--warn)">−20 %</span>','tar.per':'/ mois','toast.yearly':'Facturation annuelle activée : −20 % sur toute la durée.',
+'p1.n':'Sentinelle','p1.d':'Reconnaissance du terrain.','p1.f1':'Module 01 complet — Fondations','p1.f2':'3 labs découverte','p1.f3':'Communauté &amp; défis hebdo','p1.f4':'Mentorat individuel','p1.f5':'Préparation certifications','p1.f6':'Accès entreprise','p1.btn':'Créer un accès',
+'p2.badge':'RECOMMANDÉ PAR L\u2019ÉTAT-MAJOR','p2.n':'Opérateur','p2.d':'Le parcours complet, encadré.','p2.f1':'6 modules + 324 leçons','p2.f2':'180 labs en sandbox illimités','p2.f3':'Mentorat hebdomadaire en visio','p2.f4':'Prépa CEH, Security+, BTL1','p2.f5':'Projets notés sur cas réels','p2.f6':'Accès entreprise multi-postes','p2.btn':'S\u2019enrôler ▸',
+'p3.n':'Élite','p3.d':'Pour les équipes &amp; les ambitieux.','p3.f1':'Tout Opérateur, plus :','p3.f2':'Red Team avancée &amp; C2','p3.f3':'CTF privés mensuels classés','p3.f4':'Prépa OSCP / OSEP incluse','p3.f5':'Coaching carrière &amp; placement','p3.f6':'Licence entreprise jusqu\u2019à 10 postes','p3.btn':'Contacter le commandement',
+'tem.kicker':'07 — Transmissions reçues','tem.h2':'Ils ont changé de camp',
+'tem1.q':'Je suis passée d\u2019un master de droit à analyste SOC en 9 mois. Le module triage sous pression m\u2019a littéralement préparée à ma première semaine en poste.','tem1.w':'CLAIRE M.<span>Analyste SOC — ESN, Lyon · Promo 2025</span>',
+'tem2.q':'Les labs sont d\u2019un réalisme brutal, dans le bon sens. Le jour de mon entretien OSCP, rien ne m\u2019a surpris : j\u2019avais déjà tout cassé ici.','tem2.w':'YASSINE B.<span>Pentester junior — cabinet d\u2019audit, Paris · Promo 2024</span>',
+'tem3.q':'On a inscrit toute l\u2019équipe infra au plan Élite. Trois mois plus tard, on détectait nous-mêmes une compromission que notre prestataire avait manquée.','tem3.w':'SOPHIE R.<span>Responsable IT — industriel, Nantes · Plan Élite</span>',
+'tem4.q':'Les leçons Python et Batch m\u2019ont permis d\u2019automatiser mes premiers scripts de diagnostic dès la semaine 2. Concret, direct, sans blabla.','tem4.w':'DAVID T.<span>Consultant sécurité — Big Four · Promo 2025</span>',
+'faq.kicker':'08 — Questions de recrues','faq.h2':'Tout ce qu\u2019on nous demande',
+'fq1':'Puis-je débuter sans aucun bagage technique ?','fa1':'Oui. Le module 01 remet tout à plat — réseaux, Linux, ligne de commande — et l\u2019arsenal de code démarre de zéro en Python, C, Batch et JavaScript. 38 % de nos stagiaires n\u2019avaient aucune expérience en informatique à l\u2019entrée.',
+'fq2':'Quel matériel est nécessaire ?','fa2':'Un ordinateur avec 8 Go de RAM et un navigateur moderne suffit : tous les laboratoires tournent dans nos sandboxes distantes, accessibles 24/7. Aucune installation de machine virtuelle n\u2019est requise.',
+'fq3':'Pourquoi apprendre le C et le Batch en cybersécurité ?','fa3':'Le C est le langage des systèmes et des binaires : indispensable pour comprendre la mémoire, les exploits et le reverse engineering. Le Batch reste partout dans Windows et dans les scripts d\u2019administration — et donc, dans les attaques qui les visent.',
+'fq4':'La formation prépare-t-elle à des certifications reconnues ?','fa4':'Oui : les parcours s\u2019alignent sur les référentiels CompTIA Security+, CEH, BTL1 et, pour le plan Élite, OSCP/OSEP. 94 % de nos candidats certifiables obtiennent leur certification du premier coup.',
+'fq5':'Peut-on suivre la formation en travaillant à côté ?','fa5':'Le format est conçu pour 10 à 15 heures par semaine, entièrement asynchrone, avec des sessions de mentorat en soirée. La durée indicative de 44 semaines s\u2019étire ou se comprime selon votre disponibilité.',
+'fq6':'La formation est-elle finançable (CPF, OPCO, entreprise) ?','fa6':'Oui, notre organisme est certifié Qualiopi : le parcours Opérateur est éligible au CPF et finançable par les OPCO. Notre équipe monte le dossier avec vous sous 72 h.',
+'ins.kicker':'09 — Enrôlement','ins.h2a':'Rejoignez','ins.h2b':'TJ CYBER 2026',
+'ins.desc':'Prochaine session : <b style="color:var(--txt)">5 janvier 2026</b>. Places limitées à 120 recrues pour garantir le mentorat individuel. Créez votre accès invité — gratuit, sans engagement.',
+'ins.l1':'PLACES DISPONIBLES','ins.l2':'CLÔTURE DES INSCRIPTIONS','ins.l2v':'22 DÉC. 2026','ins.l3':'GARANTIE','ins.l3v':'14 JOURS SATISFAIT OU REMBOURSÉ',
+'form.name':'Identité complète *','form.mail':'Adresse e-mail *','form.track':'Parcours visé','form.level':'Niveau actuel','form.submit':'Transmettre la demande ▸',
+'form.ok':'✔ TRANSMISSION REÇUE — vérifiez votre boîte mail, votre accès invité arrive dans quelques minutes. Bienvenue à bord, recrue.',
+'form.e.name':'IDENTITÉ REQUISE (2 caractères min.)','form.e.mail':'ADRESSE E-MAIL INVALIDE',
+'toast.form.ok':'✔ Demande transmise — accès invité en cours de génération.','toast.form.bad':'⚠ Formulaire incomplet : corrigez les champs signalés.',
+'opt.t1':'Opérateur — parcours complet','opt.t2':'Sentinelle — découverte gratuite','opt.t3':'Élite — Red Team &amp; certifications','opt.t4':'Je ne sais pas encore (orientation)',
+'opt.l1':'Débutant complet','opt.l2':'Notions en informatique','opt.l3':'Intermédiaire','opt.l4':'Déjà en poste dans l\u2019IT',
+'foot.desc':'Académie indépendante de cybersécurité fondée en 2019. Formations certifiantes Qualiopi, laboratoires isolés, académie de code et instructeurs opérationnels.',
+'foot.nav':'Navigation','foot.res':'Ressources','foot.legal':'Légal','fl.code':'Arsenal de code','fl.blog':'Blog threat intel','fl.pod':'Podcast « Zero Day »','fl.glo':'Glossaire cyber','fl.gui':'Guides certifications','fl.ment':'Mentions légales','fl.priv':'Politique de confidentialité','fl.cgv':'CGV','fl.chart':'Charte d\u2019usage éthique',
+'foot.right':'TOUS DROITS RÉSERVÉS','foot.sys':'TOUS LES SYSTÈMES SONT OPÉRATIONNELS',
+'theme.auto':'▸ Diaporama de couleurs réactivé : vert → violet → rouge → jaune.','theme.lock':'▸ Palette figée sur ','lang.set':'Interface : français.','toast.soon':'📄 Section à venir dans la version complète.',
+'auth.kicker':'Accréditation','auth.tab.login':'Connexion','auth.tab.signup':'Inscription',
+'auth.user':'Identifiant ou e-mail','auth.pwd':'Mot de passe','auth.pwd2':'Confirmer le mot de passe','auth.name':'Nom complet',
+'auth.loginbtn':'Se connecter ▸','auth.signupbtn':'Créer mon accès ▸',
+'auth.e.name':'Nom requis (2 caractères min.)','auth.e.user':'Identifiant requis (3 caractères min.)','auth.e.pwd':'6 caractères minimum','auth.e.pwd2':'Les mots de passe ne correspondent pas','auth.e.exists':'Cet identifiant est déjà pris.','auth.e.creds':'Identifiants invalides.',
+'auth.note':'🔒 Mot de passe hashé (SHA-256) — démo pédagogique : toutes les données restent dans votre navigateur.',
+'auth.welcome':'Bienvenue à bord, agent {n}. Session sécurisée ouverte.','auth.bye':'Session fermée. À bientôt, agent.',
+'dash.kicker':'Espace membre','dash.title':'Tableau de bord','dash.agent':'AGENT','dash.clear':'CLEARANCE','dash.xp':'XP TOTAL','dash.lang':'LANGAGES VALIDÉS','dash.chal':'DÉFIS RÉUSSIS','dash.prog':'PROGRESSION GLOBALE','dash.badges':'Badges','dash.note':'Données stockées localement — démo pédagogique sans serveur.','dash.cont':'Continuer l\u2019entraînement ▸','dash.logout':'Déconnexion','dash.guest':'Visiteur',
+'clr.0':'NIVEAU 0 · VISITEUR','clr.1':'NIVEAU 1 · RECRUE','clr.2':'NIVEAU 2 · OPÉRATEUR','clr.3':'NIVEAU 3 · AGENT CONFIRMÉ','clr.4':'NIVEAU 4 · ÉLITE',
+'legal.kicker':'Informations légales','legal.body':'<h3>Éditeur</h3><p>TJ CYBER Academy — projet pédagogique étudiant.<br>Responsable de la publication : TJ, étudiant·e en première année.</p><h3>Hébergement</h3><p>GitHub Pages — GitHub Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, États-Unis.</p><h3>Données personnelles (RGPD)</h3><p>Ce site est une démonstration pédagogique : comptes, scores et préférences sont stockés <b>uniquement dans votre navigateur</b> (localStorage). Aucune donnée n\u2019est transmise à un serveur.</p><h3>Avertissement éthique</h3><p>Les techniques présentées doivent être utilisées uniquement sur des systèmes vous appartenant ou avec une autorisation explicite. Tout usage malveillant est interdit et illégal.</p>'};
+
+const EN={
+'doc.title':'TJ CYBER — Cybersecurity Academy',
+'top.status':'SYSTEMS OPERATIONAL','top.time':'LOCAL TIME','top.alert':'ALERT LEVEL','top.alertv':'WATCH','top.crypt':'ENCRYPTION: AES-256','top.palette':'PALETTE:',
+'nav.parcours':'Paths','nav.labs':'Labs','nav.code':'Code','nav.defis':'Challenges','nav.team':'Instructors','nav.pricing':'Pricing','nav.faq':'FAQ','nav.enroll':'Enlist','nav.login':'Log in','nav.logout':'Log out',
+'hero.kicker':'Cyberdefense academy — 2026 cohort now open',
+'hero.h1a':'THINK LIKE','hero.h1b':'THE ATTACKER.','hero.h1c':'DEFEND BETTER.',
+'hero.lead':'Intensive cybersecurity training: <b>pentesting, incident response, SOC, cryptography</b> — plus our <b>code academy</b> to master <b>Python, C, Batch and JavaScript</b>. Isolated labs, real scenarios, instruction by active operators.',
+'hero.cta1':'Start training ▸','hero.cta2':'Learn to code',
+'hero.s1':'Students trained','hero.s2':'Sandboxed labs','hero.s3':'Cert pass rate',
+'tick.1':'Remote RCE — firewall appliance','tick.2':'New Python · C · Batch · JS lessons available','tick.3':'Linux 6.x kernel privilege escalation','tick.4':'Phishing campaign targeting the banking sector','tick.5':'Insecure deserialization — REST API','tick.6':'npm supply-chain compromise "loglib-core"','tick.7':'2FA bypass via SIM swapping','tick.8':'CI/CD secrets leak — public repo',
+'sev.crit':'CRITICAL','sev.high':'HIGH','sev.med':'MEDIUM','sev.new':'NEW','sev.act':'ACTIVE',
+'t.b1':'[OK] Learning kernel v5.0 loaded','t.b2':'[OK] Sandboxed labs mounted (180 nodes)','t.b3':'[OK] Code academy: Python · C · Batch · JS','t.bw':'[WARN] 3 gaps detected in your posture — fixable','t.bwho':'> visitor — clearance level 0. Type "help" to explore.',
+'t.help':'Commands: help · whoami · scan · modules · code · enroll · clear · sudo','t.who':'> visitor — clearance 0. Goal: become an analyst or a pentester.','t.code':'> Code arsenal located: Python, C, Batch, JavaScript.','t.scan0':'Scanning 10.10.14.7 ...','t.scanF':'filtered by us','t.scanOk':'> 3 ports scanned in 0.42s. Quick learner.','t.enroll':'> Enlistment form located. Scroll down, recruit.','t.sudo':'Permission denied. Here, we learn before we break.','t.nf':'command not found: {c} — type "help"',
+'parc.kicker':'01 — Certified paths','parc.h2a':'The training','parc.h2b':'protocol',
+'parc.desc':'Six progressive modules, from technical foundations to advanced offense. Each module blends theory, sandboxed labs and graded assessments. Clear all six to earn the TJ CYBER diploma and prepare for industry certifications.',
+'lg.dur':'TOTAL DURATION','lg.durv':'44 WEEKS','lg.les':'LESSONS','lg.lab':'HANDS-ON LABS','lg.men':'MENTORING','lg.menv':'1 SESSION / WEEK','lg.out':'OUTCOME','parc.bro':'Download the brochure ▸',
+'tag.deb':'Beginner','tag.int':'Intermediate','tag.adv':'Advanced','tag.net':'Networks','tag.eva':'Evasion',
+'m1.t':'Security foundations','m1.d':'TCP/IP networks, Linux administration, threat models and cryptographic hygiene. The non-negotiable base.','m1.dur':'DURATION <b>6 wks</b>',
+'m2.t':'Ethical hacking &amp; pentest','m2.d':'Recon, enumeration, exploitation and professional report writing. Kali &amp; Burp toolkit.','m2.dur':'DURATION <b>8 wks</b>',
+'m3.t':'SOC Analyst &amp; active defense','m3.d':'SIEM, detection, alert triage, hardening and threat hunting. The real daily life of an operations center.','m3.dur':'DURATION <b>8 wks</b>',
+'m4.t':'Forensics &amp; incident response','m4.d':'Memory, disk and log analysis, chain of custody, crisis management and post-incident communication.','m4.dur':'DURATION <b>6 wks</b>',
+'m5.t':'Advanced Red Team','m5.d':'Defense evasion, lateral movement, C2, emulation of real adversaries (MITRE ATT&amp;CK TTPs).','m5.dur':'DURATION <b>10 wks</b>',
+'m6.t':'Cryptography &amp; DevSecOps','m6.d':'Applied crypto, PKI, CI/CD security, secrets, containers and cloud. Secure what you build.','m6.dur':'DURATION <b>6 wks</b>',
+'m.les':'LESSONS <b>42</b>','m2.les':'LESSONS <b>56</b>','m3.les':'LESSONS <b>61</b>','m4.les':'LESSONS <b>48</b>','m5.les':'LESSONS <b>70</b>','m6.les':'LESSONS <b>47</b>',
+'labs.kicker':'02 — Live laboratories','labs.h2':'Sandbox training','labs.sub':'Ephemeral vulnerable machines, reconstructed corporate networks, harmless-but-realistic malware. Every lab is timed and graded.','labs.online':'● ONLINE','labs.mnt':'◐ MAINTENANCE','labs.open':'Open lab ▸',
+'l1.t':'Anatomy of a phishing','l1.d':'Take apart a real campaign: headers, URLs, weaponized attachment — then build your own simulation.',
+'l2.t':'Kerberos &amp; Active Directory','l2.d':'Kerberoasting, pass-the-hash, abusive GPOs: compromise a full domain, then fix it.',
+'l3.t':'SOC: triage under pressure','l3.d':'50 alerts in 90 minutes in a real SIEM. Separate noise from the real intrusion, escalate properly.',
+'l4.t':'Autopsy of a ransomware','l4.d':'Memory image, persistence artifacts, ransom note: rebuild the full attack timeline.',
+'l5.t':'OWASP Top 10 in practice','l5.d':'SQL injection, IDOR, SSRF, deserialization: a deliberately fragile app, ten vulnerabilities to find.',
+'l6.t':'Broken cryptography','l6.d':'ECB revealed by images, padding oracle, weak keys: cryptographic theory through breaking.',
+'toast.lab.ok':'▸ Secure connection to lab "{n}" — sandbox assigned.','toast.lab.mnt':'⚠ {n} — maintenance in progress, back online at 22:00 UTC.',
+'code.kicker':'03 — Code arsenal','code.h2a':'Learn the languages','code.h2b':'of cyber','code.chip':'LANGUAGES CLEARED:','code.copy':'⧉ Copy','code.notes':'▸ What this code does','code.qlbl':'LANGUAGE VALIDATION ▸',
+'code.good':'> Correct. ','code.bad':'> Missed — re-read the lesson and retry.','code.done':'> Already cleared ✓ — ','code.all':'★ FULL ARSENAL — 4/4 languages cleared. You are lab-ready.',
+'toast.copy':'▸ Code copied to clipboard.','toast.copyfail':'⚠ Copy failed on this browser.',
+'defis.kicker':'04 — Training room','defis.h2':'Instant challenges','defis.xp':'XP SCORE:','toast.xp':'XP earned · total score: ',
+'c1.t':'Challenge #1 — Cryptanalysis','c1.sub':'Caesar cipher · difficulty ★☆☆ · +100 XP','c1.desc':'An intercepted message was shift-encrypted. Recover the plaintext:','c1.ph':'YOUR ANSWER...','c1.btn':'Decrypt','c1.hint':'Hint',
+'c1.ok':'> Decrypted: BIENVENUE ("welcome"). Shift +3 — well done, recruit.','c1.no':'> Answer rejected. Try again — the shift is constant.','c1.hint.msg':'> HINT: Caesar cipher, shift +3. Move each letter 3 steps to the left.',
+'c2.t':'Challenge #2 — Social engineering','c2.sub':'Threat analysis · difficulty ★☆☆ · +100 XP','c2.q':'You receive an email from "PayPal". Which clue most reliably betrays a phishing attempt?',
+'c2.a':'A — An alarming subject line: "Your account will be suspended within 24 hours"','c2.b':'B — A near-identical sender domain: service@paypa1-secure.com','c2.c':'C — A PDF attachment','c2.d':'D — The official logo in the signature',
+'c2.ok':'> Correct. A near-identical domain (typosquatting) is the most reliable clue: everything else can be faked.','c2.no':'> Fooled! Answer B: paypa1-secure.com spoofs the legitimate domain. Subject lines and logos can be copied — a verified domain cannot.',
+'war.s1':'Partner companies','war.s2':'Countries represented','war.s3':'Lab hours / month','war.s4':'CTFs hosted / year',
+'team.kicker':'05 — Instruction command','team.h2':'Trained by operators','team.sub':'No "stage" instructors here: every teacher works — or has worked — in the field, on offense and defense.',
+'team.r1':'PENTESTER · EX-ANSSI','team.b1':'8 years of offensive audits for critical infrastructure and banking. Active Directory and EDR evasion specialist.',
+'team.r2':'SOC LEAD · INCIDENT RESPONSE','team.b2':'10 years handling major incidents, including 3 ransomware crises. Builds the triage scenarios.',
+'team.r3':'CISO · GOVERNANCE &amp; RISK','team.b3':'CISO of a European industrial group. Teaches compliance without jargon: ISO 27001, NIS2, DORA.',
+'team.r4':'MALWARE ANALYST · REVERSE','team.b4':'Hunting ransomware families since 2017. Runs the autopsy lab and the reverse-engineering club.',
+'tar.kicker':'06 — Clearance levels','tar.h2':'Pick your clearance','tar.m':'Monthly','tar.y':'Yearly <span style="color:var(--warn)">−20%</span>','tar.per':'/ month','toast.yearly':'Yearly billing enabled: −20% for the full duration.',
+'p1.n':'Sentinel','p1.d':'Reconnaissance of the field.','p1.f1':'Full Module 01 — Foundations','p1.f2':'3 discovery labs','p1.f3':'Community &amp; weekly challenges','p1.f4':'One-on-one mentoring','p1.f5':'Certification prep','p1.f6':'Company access','p1.btn':'Create an access',
+'p2.badge':'COMMAND\u2019S PICK','p2.n':'Operator','p2.d':'The full path, fully guided.','p2.f1':'6 modules + 324 lessons','p2.f2':'180 unlimited sandbox labs','p2.f3':'Weekly video mentoring','p2.f4':'CEH, Security+, BTL1 prep','p2.f5':'Graded projects on real cases','p2.f6':'Multi-seat company access','p2.btn':'Enlist ▸',
+'p3.n':'Elite','p3.d':'For teams &amp; the ambitious.','p3.f1':'Everything in Operator, plus:','p3.f2':'Advanced Red Team &amp; C2','p3.f3':'Monthly ranked private CTFs','p3.f4':'OSCP / OSEP prep included','p3.f5':'Career coaching &amp; placement','p3.f6':'Company license up to 10 seats','p3.btn':'Contact command',
+'tem.kicker':'07 — Incoming transmissions','tem.h2':'They switched sides',
+'tem1.q':'I went from a law master\u2019s degree to SOC analyst in 9 months. The triage-under-pressure module literally prepared me for my first week on the job.','tem1.w':'CLAIRE M.<span>SOC Analyst — IT services, Lyon · Class of 2025</span>',
+'tem2.q':'The labs are brutally realistic, in the best way. On my OSCP interview day, nothing surprised me: I had already broken it all here.','tem2.w':'YASSINE B.<span>Junior pentester — audit firm, Paris · Class of 2024</span>',
+'tem3.q':'We enrolled the whole infra team on the Elite plan. Three months later, we detected a compromise ourselves that our vendor had missed.','tem3.w':'SOPHIE R.<span>IT Manager — industrial, Nantes · Elite plan</span>',
+'tem4.q':'The Python and Batch lessons let me automate my first diagnostic scripts by week 2. Concrete, direct, no fluff.','tem4.w':'DAVID T.<span>Security consultant — Big Four · Class of 2025</span>',
+'faq.kicker':'08 — Recruit questions','faq.h2':'Everything you ask us',
+'fq1':'Can I start with zero technical background?','fa1':'Yes. Module 01 rebuilds everything from scratch — networks, Linux, command line — and the code arsenal starts from zero in Python, C, Batch and JavaScript. 38% of our students had no IT experience at entry.',
+'fq2':'What hardware do I need?','fa2':'A computer with 8 GB of RAM and a modern browser is enough: every lab runs in our remote sandboxes, available 24/7. No virtual machine installation required.',
+'fq3':'Why learn C and Batch in cybersecurity?','fa3':'C is the language of systems and binaries: essential to understand memory, exploits and reverse engineering. Batch is still everywhere in Windows and admin scripts — and therefore in the attacks that target them.',
+'fq4':'Does the training prepare for recognized certifications?','fa4':'Yes: the paths align with CompTIA Security+, CEH, BTL1 references and, for the Elite plan, OSCP/OSEP. 94% of our certifiable candidates pass on the first attempt.',
+'fq5':'Can I follow the training while working?','fa5':'The format is designed for 10–15 hours a week, fully asynchronous, with evening mentoring sessions. The indicative 44-week duration stretches or compresses with your availability.',
+'fq6':'Is the training eligible for funding?','fa6':'Yes, our organization is Qualiopi-certified: the Operator path is eligible for French CPF funding and OPCO support. Our team builds the file with you within 72 hours.',
+'ins.kicker':'09 — Enlistment','ins.h2a':'Join','ins.h2b':'TJ CYBER 2026',
+'ins.desc':'Next session: <b style="color:var(--txt)">January 5, 2026</b>. Limited to 120 recruits to guarantee one-on-one mentoring. Create your guest access — free, no commitment.',
+'ins.l1':'SEATS AVAILABLE','ins.l2':'ENROLLMENT DEADLINE','ins.l2v':'DEC 22, 2026','ins.l3':'GUARANTEE','ins.l3v':'14-DAY MONEY BACK',
+'form.name':'Full name *','form.mail':'Email address *','form.track':'Target path','form.level':'Current level','form.submit':'Submit request ▸',
+'form.ok':'✔ TRANSMISSION RECEIVED — check your inbox, your guest access arrives within minutes. Welcome aboard, recruit.',
+'form.e.name':'NAME REQUIRED (min. 2 characters)','form.e.mail':'INVALID EMAIL ADDRESS',
+'toast.form.ok':'✔ Request submitted — guest access being generated.','toast.form.bad':'⚠ Form incomplete: fix the highlighted fields.',
+'opt.t1':'Operator — full path','opt.t2':'Sentinel — free discovery','opt.t3':'Elite — Red Team &amp; certifications','opt.t4':'Not sure yet (orientation)',
+'opt.l1':'Complete beginner','opt.l2':'Some IT notions','opt.l3':'Intermediate','opt.l4':'Already working in IT',
+'foot.desc':'Independent cybersecurity academy founded in 2019. Qualiopi-certified training, isolated labs, code academy and operational instructors.',
+'foot.nav':'Navigation','foot.res':'Resources','foot.legal':'Legal','fl.code':'Code arsenal','fl.blog':'Threat intel blog','fl.pod':'"Zero Day" podcast','fl.glo':'Cyber glossary','fl.gui':'Certification guides','fl.ment':'Legal notice','fl.priv':'Privacy policy','fl.cgv':'Terms of sale','fl.chart':'Ethical use charter',
+'foot.right':'ALL RIGHTS RESERVED','foot.sys':'ALL SYSTEMS OPERATIONAL',
+'theme.auto':'▸ Color slideshow resumed: green → violet → red → yellow.','theme.lock':'▸ Palette locked to ','lang.set':'Interface: English.','toast.soon':'📄 Section coming in the full version.',
+'auth.kicker':'Clearance','auth.tab.login':'Log in','auth.tab.signup':'Sign up',
+'auth.user':'Username or email','auth.pwd':'Password','auth.pwd2':'Confirm password','auth.name':'Full name',
+'auth.loginbtn':'Log in ▸','auth.signupbtn':'Create my access ▸',
+'auth.e.name':'Name required (min. 2 characters)','auth.e.user':'Username required (min. 3 characters)','auth.e.pwd':'6 characters minimum','auth.e.pwd2':'Passwords do not match','auth.e.exists':'This username is already taken.','auth.e.creds':'Invalid credentials.',
+'auth.note':'🔒 Password hashed (SHA-256) — educational demo: all data stays in your browser.',
+'auth.welcome':'Welcome aboard, agent {n}. Secure session opened.','auth.bye':'Session closed. See you soon, agent.',
+'dash.kicker':'Member area','dash.title':'Dashboard','dash.agent':'AGENT','dash.clear':'CLEARANCE','dash.xp':'TOTAL XP','dash.lang':'LANGUAGES CLEARED','dash.chal':'CHALLENGES WON','dash.prog':'OVERALL PROGRESS','dash.badges':'Badges','dash.note':'Data stored locally — educational demo without a server.','dash.cont':'Continue training ▸','dash.logout':'Log out','dash.guest':'Visitor',
+'clr.0':'LEVEL 0 · VISITOR','clr.1':'LEVEL 1 · RECRUIT','clr.2':'LEVEL 2 · OPERATOR','clr.3':'LEVEL 3 · CONFIRMED AGENT','clr.4':'LEVEL 4 · ELITE',
+'legal.kicker':'Legal information','legal.body':'<h3>Publisher</h3><p>TJ CYBER Academy — student educational project.<br>Publishing manager: TJ, first-year student.</p><h3>Hosting</h3><p>GitHub Pages — GitHub Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA.</p><h3>Personal data (GDPR)</h3><p>This site is an educational demonstration: accounts, scores and preferences are stored <b>only in your browser</b> (localStorage). No data is sent to any server.</p><h3>Ethical warning</h3><p>The techniques presented must only be used on systems you own or with explicit authorization. Any malicious use is forbidden and illegal.</p>'};
+
+const I18N={fr:FR,en:EN};
+let curLang='fr';
+try{curLang=localStorage.getItem('tj-lang')==='en'?'en':'fr'}catch(e){}
+function t(k){return (I18N[curLang][k]!==undefined)?I18N[curLang][k]:k}
+
+function tickClock(){$('#clock').textContent=new Date().toLocaleTimeString(curLang==='fr'?'fr-FR':'en-GB')}
+tickClock();setInterval(tickClock,1000);
+function toast(msg,type){const el=document.createElement('div');el.className='toast '+(type||'');el.textContent=msg;$('#toasts').appendChild(el);
+setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),400)},3600)}
+
+const FEED=[
+ {c:'CVE-2026-0417',d:'tick.1',s:'crit',sl:'sev.crit'},
+ {c:'TJ CYBER',d:'tick.2',s:'med',sl:'sev.new'},
+ {c:'CVE-2026-1182',d:'tick.3',s:'high',sl:'sev.high'},
+ {c:'CVE-2026-0933',d:'tick.4',s:'med',sl:'sev.act'},
+ {c:'CVE-2026-1240',d:'tick.5',s:'high',sl:'sev.high'},
+ {c:'CVE-2025-4471',d:'tick.6',s:'crit',sl:'sev.crit'},
+ {c:'CVE-2026-0561',d:'tick.7',s:'med',sl:'sev.med'},
+ {c:'CVE-2026-1307',d:'tick.8',s:'high',sl:'sev.high'}];
+function renderTicker(){$('#ticker').innerHTML=FEED.concat(FEED).map(f=>'<span class="item"><b style="color:var(--txt)">'+f.c+'</b> '+t(f.d)+' <span class="sev sev-'+f.s+'">'+t(f.sl)+'</span></span>').join('')}
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+$$('[data-reveal]').forEach(el=>io.observe(el));
+const GLYPHS='!<>-_\\/[]{}—=+*^?#01ABCDEF';
+function scramble(el){const final=el.dataset.text||el.textContent;el.dataset.text=final;
+ if(REDUCED){el.textContent=final;return}
+ let f=0;const total=final.length*3+12;
+ (function step(){let out='';
+  for(let i=0;i<final.length;i++){
+    if(final[i]===' '){out+=' ';continue}
+    out+= i<f/3-4 ? final[i] : GLYPHS[Math.floor(Math.random()*GLYPHS.length)];}
+  el.textContent=out;f++;
+  if(f<total)requestAnimationFrame(step);else el.textContent=final;})();}
+$$('[data-scramble]').forEach((el,i)=>setTimeout(()=>scramble(el),300+i*350));
+const cio=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;cio.unobserve(e.target);
+ const el=e.target,end=+el.dataset.count,suf=el.dataset.suffix||'';
+ if(REDUCED){el.textContent=end.toLocaleString('fr-FR')+suf;return}
+ const t0=performance.now(),dur=1600;
+ (function run(tt){const p=Math.min((tt-t0)/dur,1),v=Math.floor(end*(1-Math.pow(1-p,3)));
+  el.textContent=v.toLocaleString('fr-FR')+suf;if(p<1)requestAnimationFrame(run)})(t0);}),{threshold:.5});
+$$('[data-count]').forEach(el=>cio.observe(el));
+
+const body=$('#termBody');
+const inputLine=document.createElement('div');inputLine.className='term-input-line';
+inputLine.innerHTML='<span class="prompt">tj@cyber-lab:~$</span><input id="termIn" autocomplete="off" spellcheck="false" aria-label="Terminal">';
+function addLine(cls,txt){const d=document.createElement('div');d.className=cls;d.textContent=txt;body.insertBefore(d,inputLine);body.scrollTop=body.scrollHeight}
+const BOOT=[['cmd','tjcyber --boot'],['ok','t.b1'],['ok','t.b2'],['ok','t.b3'],['warn','t.bw'],['cmd','whoami'],['out','t.bwho']];
+let bootDone=false;
+async function runBoot(){
+ if(REDUCED){BOOT.forEach(l=>addLine(l[0],t(l[1])));finishBoot();return}
+ for(const p of BOOT){const cls=p[0],txt=p[1];
+  if(cls==='cmd'){const d=document.createElement('div');d.className='cmd';body.insertBefore(d,inputLine);
+   for(const ch of txt){d.textContent+=ch;body.scrollTop=body.scrollHeight;await sleep(26)}await sleep(240)}
+  else{addLine(cls,t(txt));await sleep(200)}}
+ finishBoot();}
+function retypeBoot(){body.querySelectorAll('div').forEach(d=>{if(d!==inputLine)d.remove()});
+ BOOT.forEach(l=>addLine(l[0],t(l[1])));body.appendChild(inputLine);}
+function finishBoot(){body.appendChild(inputLine);bootDone=true;const inp=$('#termIn');
+ inp.addEventListener('keydown',ev=>{if(ev.key!=='Enter')return;
+  const raw=inp.value.trim();if(!raw)return;addLine('cmd',raw);const cmd=raw.toLowerCase();inp.value='';
+  if(cmd==='help')addLine('sys',t('t.help'));
+  else if(cmd==='whoami')addLine('out',t('t.who'));
+  else if(cmd==='code'){$('#code').scrollIntoView();addLine('ok',t('t.code'));}
+  else if(cmd==='scan'){addLine('sys',t('t.scan0'));
+   setTimeout(()=>{addLine('out','22/tcp  open   ssh');addLine('out','80/tcp  open   http');addLine('warn','443/tcp '+t('t.scanF'));addLine('ok',t('t.scanOk'))},500);}
+  else if(cmd==='modules')addLine('out','01 Foundations · 02 Pentest · 03 SOC · 04 DFIR · 05 Red Team · 06 Crypto/DevSecOps');
+  else if(cmd==='enroll'||cmd==='inscription'){$('#inscription').scrollIntoView();addLine('ok',t('t.enroll'));}
+  else if(cmd==='clear'){body.querySelectorAll('div').forEach(d=>{if(d!==inputLine)d.remove()});}
+  else if(cmd==='sudo'||cmd.startsWith('sudo'))addLine('err',t('t.sudo'));
+  else addLine('err',t('t.nf').replace('{c}',cmd));});}
+
+$$('.lab-open').forEach(b=>b.addEventListener('click',()=>{
+ const mnt=b.closest('.lab-card').querySelector('.lab-status').classList.contains('mnt');
+ const key=mnt?'toast.lab.mnt':'toast.lab.ok';
+ toast(t(key).replace('{n}',b.dataset.lab),mnt?'warn':'');}));
+
+let xp=0;const xpEl=$('#xpVal');
+function gain(n){xp+=n;xpEl.textContent=xp;xpEl.classList.add('pop');setTimeout(()=>xpEl.classList.remove('pop'),250);toast('+'+n+' '+t('toast.xp')+xp);saveProgress();}
+
+const LESSONS={
+ python:{name:'Python',badge:'PY',sub:'SCRIPTING',file:'agent.py',
+  desc:{fr:'Le couteau suisse de l\u2019automatisation — scripting offensif, parsing de logs, outils d\u2019audit.',en:'The Swiss army knife of automation — offensive scripting, log parsing, audit tooling.'},
+  lessons:[
+   {title:{fr:'L1 · Variables & print',en:'L1 · Variables & print'},
+    code:{fr:['# Ma premiere commande d\u2019agent','nom_agent = "Sentinelle-07"','niveau = 3','','print(f"Agent {nom_agent} : clearance niveau {niveau}")'],
+          en:['# My first agent command','agent_name = "Sentinel-07"','level = 3','','print(f"Agent {agent_name}: clearance level {level}")']},
+    notes:{fr:['Une variable se crée sans mot-clé : nom_agent = "…" suffit.','Les f-strings (f"...") injectent des variables avec {variable}.','print() affiche le résultat — votre premier outil de debug.'],
+           en:['A variable needs no keyword: agent_name = "…" is enough.','f-strings (f"...") inject variables with {variable}.','print() displays the result — your first debugging tool.']}},
+   {title:{fr:'L2 · Boucles & scan',en:'L2 · Loops & scan'},
+    code:{fr:['ports = [22, 80, 443, 3389, 8080]','','for port in ports:','    if port == 443:','        print(f"Port {port} : OUVERT (HTTPS)")','    else:','        print(f"Port {port} : filtre")'],
+          en:['ports = [22, 80, 443, 3389, 8080]','','for port in ports:','    if port == 443:','        print(f"Port {port}: OPEN (HTTPS)")','    else:','        print(f"Port {port}: filtered")']},
+    notes:{fr:['for parcourt chaque élément d\u2019une liste.','if/else décide du sort de chaque port.','En sécurité, on boucle sur des ports, des IP, des logs…'],
+           en:['for walks through every item of a list.','if/else decides the fate of each port.','In security, you loop over ports, IPs, logs…']}},
+   {title:{fr:'L3 · Fonctions & hash',en:'L3 · Functions & hashing'},
+    code:{fr:['def generer_hash(mot_de_passe):','    # Version simplifiee (jamais en prod !)','    return "sha256::" + str(sum(ord(c) for c in mot_de_passe))','','print(generer_hash("azerty123"))'],
+          en:['def make_hash(password):','    # Simplified version (never in prod!)','    return "sha256::" + str(sum(ord(c) for c in password))','','print(make_hash("azerty123"))']},
+    notes:{fr:['def définit une fonction réutilisable.','ord(c) renvoie le code numérique d\u2019un caractère.','⚠ Jamais ce genre de hash en production — utilisez hashlib !'],
+           en:['def defines a reusable function.','ord(c) returns the numeric code of a character.','⚠ Never use this kind of hash in production — use hashlib!']}}],
+  quiz:{q:{fr:'Que fait la méthode .append() en Python ?',en:'What does the .append() method do in Python?'},
+   opts:{fr:['Elle supprime le premier élément d\u2019une liste','Elle ajoute un élément à la fin d\u2019une liste','Elle trie la liste automatiquement'],
+         en:['It removes the first item of a list','It adds an item to the end of a list','It sorts the list automatically']},good:1,
+   explain:{fr:'.append(x) ajoute x en fin de liste. Pour insérer ailleurs : .insert().',en:'.append(x) adds x at the end of the list. To insert elsewhere: .insert().'}}},
+ c:{name:'C',badge:'C',sub:'SYSTEM',file:'agent.c',
+  desc:{fr:'Au plus près de la mémoire. Indispensable pour comprendre les binaires et le reverse engineering.',en:'As close to memory as it gets. Essential to understand binaries and reverse engineering.'},
+  lessons:[
+   {title:{fr:'L1 · Hello, agent',en:'L1 · Hello, agent'},
+    code:{fr:['#include <stdio.h>','','int main(void) {','    printf("Bienvenue dans le lab C\\n");','    return 0;','}'],
+          en:['#include <stdio.h>','','int main(void) {','    printf("Welcome to the C lab\\n");','    return 0;','}']},
+    notes:{fr:['#include importe la bibliothèque stdio (entrées/sorties).','main() est le point d\u2019entrée de tout programme C.','printf affiche du texte ; \\n passe à la ligne.'],
+           en:['#include imports the stdio library (input/output).','main() is the entry point of every C program.','printf prints text; \\n moves to the next line.']}},
+   {title:{fr:'L2 · Types & printf',en:'L2 · Types & printf'},
+    code:{fr:['#include <stdio.h>','','int main(void) {','    int niveau_alerte = 4;','    char code_zone = \'B\';','    printf("Zone %c : alerte niveau %d\\n", code_zone, niveau_alerte);','    printf("Taille d\u2019un int : %zu octets\\n", sizeof(int));','    return 0;','}'],
+          en:['#include <stdio.h>','','int main(void) {','    int alert_level = 4;','    char zone_code = \'B\';','    printf("Zone %c: alert level %d\\n", zone_code, alert_level);','    printf("Size of an int: %zu bytes\\n", sizeof(int));','    return 0;','}']},
+    notes:{fr:['Chaque variable a un type : int (entier), char (caractère)…','%c et %d sont des « trous » remplacés par les valeurs.','sizeof() mesure la taille mémoire en octets.'],
+           en:['Every variable has a type: int (integer), char (character)…','%c and %d are "holes" filled with the values.','sizeof() measures memory size in bytes.']}},
+   {title:{fr:'L3 · Octets & boucles',en:'L3 · Bytes & loops'},
+    code:{fr:['#include <stdio.h>','','int main(void) {','    unsigned char trame[] = {0xDE, 0xAD, 0xBE, 0xEF};','    for (int i = 0; i < 4; i++) {','        printf("Octet %d : 0x%02X\\n", i, trame[i]);','    }','    return 0;','}'],
+          en:['#include <stdio.h>','','int main(void) {','    unsigned char frame[] = {0xDE, 0xAD, 0xBE, 0xEF};','    for (int i = 0; i < 4; i++) {','        printf("Byte %d: 0x%02X\\n", i, frame[i]);','    }','    return 0;','}']},
+    notes:{fr:['Un tableau stocke plusieurs octets côte à côte.','%02X affiche un octet en hexadécimal sur 2 chiffres.','Lire des octets bruts = la base du reverse engineering.'],
+           en:['An array stores several bytes side by side.','%02X prints a byte as 2-digit hexadecimal.','Reading raw bytes = the basis of reverse engineering.']}}],
+  quiz:{q:{fr:'Que se passe-t-il si vous oubliez un point-virgule en fin d\u2019instruction ?',en:'What happens if you forget a semicolon at the end of a statement?'},
+   opts:{fr:['Le compilateur renvoie une erreur','Le programme ignore simplement la ligne','L\u2019ordinateur redémarre'],
+         en:['The compiler returns an error','The program simply ignores the line','The computer restarts']},good:0,
+   explain:{fr:'Le C est strict : chaque instruction se termine par « ; », sinon la compilation échoue.',en:'C is strict: every statement ends with ";", otherwise compilation fails.'}}},
+ batch:{name:'Batch',badge:'BAT',sub:'WINDOWS',file:'diagnostic.bat',
+  desc:{fr:'L\u2019automatisation Windows historique — 10 lignes suffisent pour un script de diagnostic.',en:'The historic Windows automation tool — 10 lines are enough for a diagnostic script.'},
+  lessons:[
+   {title:{fr:'L1 · Premier script',en:'L1 · First script'},
+    code:{fr:['@echo off','title TJ Cyber - Diagnostic','echo Initialisation du diagnostic...','echo Machine : %COMPUTERNAME%','pause'],
+          en:['@echo off','title TJ Cyber - Diagnostic','echo Starting diagnostic...','echo Machine: %COMPUTERNAME%','pause']},
+    notes:{fr:['@echo off masque l\u2019affichage des commandes elles-mêmes.','%COMPUTERNAME% est une variable d\u2019environnement Windows.','pause attend une touche — pratique pour lire le résultat.'],
+           en:['@echo off hides the commands themselves from display.','%COMPUTERNAME% is a Windows environment variable.','pause waits for a key press — handy to read the result.']}},
+   {title:{fr:'L2 · Variables & IF',en:'L2 · Variables & IF'},
+    code:{fr:['@echo off','set NIVEAU=3','','if %NIVEAU% GEQ 3 (','    echo Alerte : niveau critique atteint',') else (','    echo Situation stable',')','pause'],
+          en:['@echo off','set LEVEL=3','','if %LEVEL% GEQ 3 (','    echo Alert: critical level reached',') else (','    echo Situation stable',')','pause']},
+    notes:{fr:['set crée une variable, utilisable avec %NOM%.','GEQ signifie « greater or equal » (≥).','Les parenthèses délimitent les blocs if/else.'],
+           en:['set creates a variable, used with %NAME%.','GEQ means "greater or equal" (≥).','Parentheses delimit if/else blocks.']}},
+   {title:{fr:'L3 · Boucle FOR fichiers',en:'L3 · FOR loop on files'},
+    code:{fr:['@echo off','for %%F in (*.log) do (','    echo Analyse de %%F ...',')','echo Scan termine.','pause'],
+          en:['@echo off','for %%F in (*.log) do (','    echo Scanning %%F ...',')','echo Scan complete.','pause']},
+    notes:{fr:['for %%F in (*.log) parcourt tous les fichiers .log du dossier.','%%F représente le fichier courant dans la boucle.','Idéal pour automatiser un diagnostic Windows.'],
+           en:['for %%F in (*.log) walks through every .log file in the folder.','%%F represents the current file in the loop.','Perfect to automate a Windows diagnostic.']}}],
+  quiz:{q:{fr:'Quelle commande affiche le contenu d\u2019un répertoire en Batch ?',en:'Which command lists the contents of a directory in Batch?'},
+   opts:{fr:['ls','dir','show /all'],en:['ls','dir','show /all']},good:1,
+   explain:{fr:'dir liste fichiers et dossiers. ls est la commande Linux équivalente.',en:'dir lists files and folders. ls is the Linux equivalent.'}}},
+ js:{name:'JavaScript',badge:'JS',sub:'WEB',file:'agent.js',
+  desc:{fr:'Le langage du web, côté client comme serveur. Et donc, des failles web aussi.',en:'The language of the web, client-side and server-side. And therefore, of web vulnerabilities too.'},
+  lessons:[
+   {title:{fr:'L1 · Variables & log',en:'L1 · Variables & log'},
+    code:{fr:['const agent = "TJ-01";','let tentatives = 3;','','console.log(`Agent ${agent} pret - ${tentatives} tentatives restantes`);'],
+          en:['const agent = "TJ-01";','let tries = 3;','','console.log(`Agent ${agent} ready - ${tries} attempts left`);']},
+    notes:{fr:['const = valeur fixe, let = valeur modifiable.','Les backticks `…` permettent l\u2019interpolation ${variable}.','console.log() est le print() du navigateur et de Node.js.'],
+           en:['const = fixed value, let = changeable value.','Backticks `…` enable ${variable} interpolation.','console.log() is the print() of browsers and Node.js.']}},
+   {title:{fr:'L2 · Filtrer les IP suspectes',en:'L2 · Filtering suspicious IPs'},
+    code:{fr:['const connexions = ["192.168.1.10", "45.83.22.1", "192.168.1.22"];','','const suspectes = connexions.filter(ip => !ip.startsWith("192.168"));','','console.log("IP suspectes :", suspectes);'],
+          en:['const connections = ["192.168.1.10", "45.83.22.1", "192.168.1.22"];','','const suspicious = connections.filter(ip => !ip.startsWith("192.168"));','','console.log("Suspicious IPs:", suspicious);']},
+    notes:{fr:['filter() crée un nouveau tableau avec les éléments validés.','ip => !ip.startsWith("192.168") : la fonction fléchée de tri.','Repérer une IP hors réseau local : réflexe d\u2019analyste SOC.'],
+           en:['filter() creates a new array with the validated items.','ip => !ip.startsWith("192.168"): the arrow function doing the sorting.','Spotting an IP outside the local network: a SOC analyst reflex.']}},
+   {title:{fr:'L3 · async / await',en:'L3 · async / await'},
+    code:{fr:['async function verifierStatut(endpoint) {','    const reponse = await fetch(endpoint);','    const data = await reponse.json();','    return data.securise;','}'],
+          en:['async function checkStatus(endpoint) {','    const response = await fetch(endpoint);','    const data = await response.json();','    return data.secure;','}']},
+    notes:{fr:['async/await rend le code asynchrone lisible.','fetch() appelle une API ; .json() lit la réponse.','Les applis web vivent ici — et leurs failles aussi.'],
+           en:['async/await makes asynchronous code readable.','fetch() calls an API; .json() reads the response.','Web apps live here — and so do their flaws.']}}],
+  quiz:{q:{fr:'Quel mot-clé déclare une valeur non modifiable en JavaScript ?',en:'Which keyword declares a value that cannot be reassigned in JavaScript?'},
+   opts:{fr:['static','let','const'],en:['static','let','const']},good:2,
+   explain:{fr:'const empêche la réassignation. let autorise la modification, static a un autre rôle.',en:'const prevents reassignment. let allows modification; static has a different role.'}}}};
+const HL={
+ python:[[/#.*/,'tok-c'],[/[frb]?"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'/,'tok-s'],[/\b(def|for|in|if|elif|else|return|import|from|class|while|and|or|not|pass|break|continue|True|False|None)\b/,'tok-k'],[/\b0x[0-9A-Fa-f]+\b|\b\d+(?:\.\d+)?\b/,'tok-n']],
+ c:[[/\/\/.*/,'tok-c'],[/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'/,'tok-s'],[/#\s*[a-z]+|<[\w.]+>/,'tok-d'],[/\b(int|char|void|return|for|if|else|unsigned|signed|sizeof|struct|while|float|long)\b/,'tok-k'],[/\b0x[0-9A-Fa-f]+\b|\b\d+\b/,'tok-n']],
+ batch:[[/^\s*(?:rem\b.*|::.*)$/i,'tok-c'],[/"[^"]*"/,'tok-s'],[/%[^%\s]+%|%%~?[A-Za-z]/,'tok-v'],[/\b(?:echo|off|on|set|if|else|pause|for|do|in|not|defined|exist|title|call|goto|GEQ|LEQ|EQU|NEQ|GTR|LSS)\b/i,'tok-k'],[/\b\d+\b/,'tok-n']],
+ js:[[/\/\/.*/,'tok-c'],[/`(?:[^`\\]|\\.)*`|"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'/,'tok-s'],[/\b(const|let|var|function|return|async|await|if|else|for|of|in|new|class|import|export|true|false|null|undefined|typeof)\b/,'tok-k'],[/\b0x[0-9A-Fa-f]+\b|\b\d+(?:\.\d+)?\b/,'tok-n']]};
+function hlLine(line,lang){
+ const rules=HL[lang].map(r=>({re:new RegExp(r[0].source,'y'+(r[0].ignoreCase?'i':'')),cls:r[1]}));
+ let out='',i=0;
+ while(i<line.length){let best=null;
+  for(const r of rules){r.re.lastIndex=i;const m=r.re.exec(line);if(m&&m.index===i&&m[0].length){best={m,r};break;}}
+  if(best){out+='<span class="'+best.r.cls+'">'+esc(best.m[0])+'</span>';i+=best.m[0].length}
+  else{out+=esc(line[i]);i++}}
+ return out||'&nbsp;';}
+let curLangTab='python',curLesson=0;const validated={};let currentCode='';
+function buildTabs(){
+ const c=$('#langTabs');c.innerHTML='';
+ Object.keys(LESSONS).forEach(key=>{const L=LESSONS[key];
+  const b=document.createElement('button');b.className='lang-tab'+(key===curLangTab?' active':'');
+  b.innerHTML='<span class="mb">'+L.badge+'</span><span><span class="lname">'+L.name+'</span><br><span class="lsub">'+L.sub+'</span></span>'+(validated[key]?'<span class="lcheck">✓</span>':'');
+  b.addEventListener('click',()=>{curLangTab=key;curLesson=0;buildTabs();renderLang();});
+  c.appendChild(b);});}
+function renderLang(){
+ const L=LESSONS[curLangTab],lg=curLang;
+ $('#codeFile').textContent=L.file;
+ $('#langDesc').textContent='▸ '+L.desc[lg];
+ const pills=$('#lessonPills');pills.innerHTML='';
+ L.lessons.forEach((ls,i)=>{const p=document.createElement('button');p.className='pill'+(i===curLesson?' active':'');p.textContent=ls.title[lg];
+  p.addEventListener('click',()=>{curLesson=i;renderLang();});pills.appendChild(p);});
+ const ls=L.lessons[curLesson];const codeArr=ls.code[lg];currentCode=codeArr.join('\n');
+ $('#codeLines').innerHTML=codeArr.map((ln,i)=>'<div class="cl"><span class="no">'+(i+1)+'</span><span class="lc">'+hlLine(ln,curLangTab)+'</span></div>').join('');
+ $('#codeNotes').innerHTML=ls.notes[lg].map(n=>'<li>'+n+'</li>').join('');
+ renderQuiz(L);}
+function renderQuiz(L){
+ const lg=curLang;$('#quizQ').textContent=L.quiz.q[lg];
+ const box=$('#langQuiz');box.innerHTML='';const fb=$('#langQuizFb');
+ const done=!!validated[curLangTab];
+ L.quiz.opts[lg].forEach((o,i)=>{const b=document.createElement('button');b.className='quiz-opt';b.textContent=String.fromCharCode(65+i)+' — '+o;
+  if(done){b.disabled=true;if(i===L.quiz.good)b.classList.add('right');}
+  else b.addEventListener('click',()=>{
+   if(i===L.quiz.good){
+    validated[curLangTab]=true;b.classList.add('right');
+    $$('.quiz-opt',box).forEach(x=>x.disabled=true);
+    fb.textContent=t('code.good')+L.quiz.explain[lg];fb.className='ctf-feedback good';
+    saveProgress();buildTabs();
+    const n=Object.keys(validated).length;$('#langCount').textContent=n+'/4';
+    gain(50);
+    if(n===4)toast(t('code.all'));
+   }else{
+    b.classList.add('wrong');
+    fb.textContent=t('code.bad');fb.className='ctf-feedback bad';
+    setTimeout(()=>b.classList.remove('wrong'),900);}});
+  box.appendChild(b);});
+ if(done){fb.textContent=t('code.done')+L.quiz.explain[lg];fb.className='ctf-feedback good';}
+ else{fb.textContent='';fb.className='ctf-feedback';}}
+$('#copyBtn').addEventListener('click',()=>{
+ const ok=()=>toast(t('toast.copy'));
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(currentCode).then(ok).catch(fallbackCopy);}
+ else fallbackCopy();
+ function fallbackCopy(){const ta=document.createElement('textarea');ta.value=currentCode;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');ok()}catch(e){toast(t('toast.copyfail'),'warn')}ta.remove();}});
+
+let cDone=false,qDone=false;
+$('#caesarBtn').addEventListener('click',()=>{
+ if(cDone)return;const cIn=$('#caesarIn');
+ const v=(cIn.value||'').trim().toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+ if(v==='BIENVENUE'){cDone=true;saveProgress();const fb=$('#caesarFb');fb.textContent=t('c1.ok');fb.className='ctf-feedback good';gain(100);}
+ else{const fb=$('#caesarFb');fb.textContent=t('c1.no');fb.className='ctf-feedback bad';cIn.classList.add('shake');setTimeout(()=>cIn.classList.remove('shake'),450);}});
+$('#caesarIn').addEventListener('keydown',e=>{if(e.key==='Enter')$('#caesarBtn').click()});
+$('#caesarHint').addEventListener('click',()=>{if(cDone)return;const fb=$('#caesarFb');fb.textContent=t('c1.hint.msg');fb.className='ctf-feedback';fb.style.color='var(--warn)'});
+$$('.qz').forEach(b=>b.addEventListener('click',()=>{
+ if(qDone)return;
+ const qFb=$('#quizFb');
+ if(b.dataset.good==='1'){qDone=true;saveProgress();$$('.qz').forEach(o=>o.disabled=true);b.classList.add('right');qFb.textContent=t('c2.ok');qFb.className='ctf-feedback good';gain(100);}
+ else{b.classList.add('wrong');$$('.qz')[1].classList.add('right');$$('#quizFb~ *');$$('.qz').forEach(o=>o.disabled=true);qFb.textContent=t('c2.no');qFb.className='ctf-feedback bad';}}));
+
+const sw=$('#swToggle');let yearly=false;
+function setBill(){sw.setAttribute('aria-checked',yearly);$('#billToggle').classList.toggle('yearly',yearly);
+ $('#lblMonthly').classList.toggle('on',!yearly);$('#lblYearly').classList.toggle('on',yearly);
+ $$('.pv').forEach(p=>{p.textContent=yearly?p.dataset.y:p.dataset.m;const pr=p.closest('.price');pr.classList.remove('pulse');void pr.offsetWidth;pr.classList.add('pulse');});
+ if(yearly)toast(t('toast.yearly'));}
+sw.addEventListener('click',()=>{yearly=!yearly;setBill()});
+sw.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();yearly=!yearly;setBill()}});
+
+$$('.faq-item').forEach(it=>{const q=$('.faq-q',it),a=$('.faq-a',it);
+ q.addEventListener('click',()=>{const open=it.classList.contains('open');
+  $$('.faq-item.open').forEach(o=>{o.classList.remove('open');$('.faq-a',o).style.maxHeight=null});
+  if(!open){it.classList.add('open');a.style.maxHeight=a.scrollHeight+'px'}});});
+
+$('#enrollForm').addEventListener('submit',e=>{e.preventDefault();
+ const name=$('#fName'),mail=$('#fMail');let ok=true;
+ const set=(inp,err,msg)=>{inp.closest('.fgroup').classList.toggle('err',!!msg);$(err).textContent=msg||'';if(msg)ok=false};
+ set(name,'#eName',name.value.trim().length<2?t('form.e.name'):'');
+ set(mail,'#eMail',!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail.value.trim())?t('form.e.mail'):'');
+ if(ok){$('#insOk').style.display='block';toast(t('toast.form.ok'));
+  name.value='';mail.value='';setTimeout(()=>$('#insOk').style.display='none',8000);}
+ else toast(t('toast.form.bad'),'warn');});
+
+const MODES=['AUTO','VERT','VIOLET','ROUGE','JAUNE'];let mIdx=0;
+$('#themeChip').addEventListener('click',()=>{
+ mIdx=(mIdx+1)%MODES.length;const m=MODES[mIdx];
+ if(m==='AUTO'){mode='auto';phase='hold';phaseStart=performance.now();
+  if(!REDUCED)requestAnimationFrame(palFrame);
+  toast(t('theme.auto'));}
+ else{mode='lock';const i=PALETTE.findIndex(p=>p.name===m);pIdx=i;
+  applyRGB(PALETTE[i].rgb);$('#themeName').textContent=palName(i);
+  toast(t('theme.lock')+palName(i)+'.');}});
+
+/* ================= AUTH & PROGRESSION ================= */
+let sessionUser=null;
+function getUsers(){try{return JSON.parse(localStorage.getItem('tj-users'))||{}}catch(e){return{}}}
+function saveUsers(u){try{localStorage.setItem('tj-users',JSON.stringify(u))}catch(e){}}
+async function hashPwd(pwd,salt){
+ const msg=salt+'::TJ::'+pwd;
+ try{
+  if(window.crypto&&crypto.subtle){
+   const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(msg));
+   return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');}
+ }catch(e){}
+ let h=0x811c9dc5;
+ for(let i=0;i<msg.length;i++){h^=msg.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0;}
+ return 'fnv-'+h.toString(16);}
+function makeSalt(){let s='';const c='abcdef0123456789';for(let i=0;i<16;i++)s+=c[Math.random()*c.length|0];return s}
+function progressKey(){return 'tj-prog-'+(sessionUser?sessionUser.toLowerCase():'guest')}
+function loadProgress(){
+ xp=0;for(const k in validated)delete validated[k];cDone=false;qDone=false;
+ try{const p=JSON.parse(localStorage.getItem(progressKey()));
+  if(p){xp=p.xp||0;Object.assign(validated,p.validated||{});cDone=!!p.c1;qDone=!!p.c2;}}catch(e){}}
+function saveProgress(){try{localStorage.setItem(progressKey(),JSON.stringify({xp,validated,c1:cDone,c2:qDone}))}catch(e){}}
+function applyProgressUI(){
+ xpEl.textContent=xp;
+ $('#langCount').textContent=Object.keys(validated).length+'/4';
+ buildTabs();renderLang();
+ const cIn=$('#caesarIn'),cFb=$('#caesarFb');
+ if(cDone){cIn.disabled=true;cIn.value='BIENVENUE';cFb.textContent=t('c1.ok');cFb.className='ctf-feedback good';}
+ else{cIn.disabled=false;cFb.textContent='';cFb.className='ctf-feedback';}
+ const qb=$$('.qz');
+ if(qDone){qb.forEach(o=>o.disabled=true);qb[1].classList.add('right');$('#quizFb').textContent=t('c2.ok');$('#quizFb').className='ctf-feedback good';}
+ else{qb.forEach(o=>{o.disabled=false;o.classList.remove('right','wrong')});$('#quizFb').textContent='';$('#quizFb').className='ctf-feedback';}}
+function updateAuthUI(){
+ const b=$('#navAuth'),e=$('#navEnroll');
+ b.textContent=sessionUser?('▣ '+sessionUser.toUpperCase()):t('nav.login');
+ e.textContent=sessionUser?t('nav.logout'):t('nav.enroll');}
+function afterAuthChange(msg){loadProgress();applyProgressUI();updateAuthUI();toast(msg)}
+function openAuth(tab){$('#authModal').classList.add('open');switchAuthTab(tab||'login');
+ const fb=$('#authFb');fb.textContent='';fb.className='ctf-feedback';}
+function switchAuthTab(tab){
+ $('#tabLogin').classList.toggle('on',tab==='login');
+ $('#tabSignup').classList.toggle('on',tab==='signup');
+ $('#loginForm').style.display=tab==='login'?'block':'none';
+ $('#signupForm').style.display=tab==='signup'?'block':'none';}
+$('#tabLogin').addEventListener('click',()=>switchAuthTab('login'));
+$('#tabSignup').addEventListener('click',()=>switchAuthTab('signup'));
+$$('[data-close]').forEach(b=>b.addEventListener('click',()=>{const m=$('#'+b.dataset.close);if(m)m.classList.remove('open')}));
+$$('.modal-overlay').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open')}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.modal-overlay').forEach(m=>m.classList.remove('open'))});
+$('#loginForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const fb=$('#authFb');fb.className='ctf-feedback';
+ const u=$('#liUser').value.trim().toLowerCase(),p=$('#liPwd').value;
+ const rec=getUsers()[u];
+ if(!rec){fb.textContent=t('auth.e.creds');fb.classList.add('bad');return;}
+ const h=await hashPwd(p,rec.salt);
+ if(h!==rec.hash){fb.textContent=t('auth.e.creds');fb.classList.add('bad');return;}
+ sessionUser=rec.user;
+ try{localStorage.setItem('tj-session',sessionUser)}catch(err){}
+ $('#authModal').classList.remove('open');
+ afterAuthChange(t('auth.welcome').replace('{n}',rec.name||rec.user));});
+$('#signupForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const fb=$('#authFb');fb.className='ctf-feedback';
+ let ok=true;
+ const name=$('#suName'),user=$('#suUser'),pwd=$('#suPwd'),pwd2=$('#suPwd2');
+ const setE=(inp,sel,msg)=>{$(sel).textContent=msg||'';inp.closest('.fgroup').classList.toggle('err',!!msg);if(msg)ok=false};
+ setE(name,'#suNameE',name.value.trim().length<2?t('auth.e.name'):'');
+ setE(user,'#suUserE',user.value.trim().length<3?t('auth.e.user'):'');
+ setE(pwd,'#suPwdE',pwd.value.length<6?t('auth.e.pwd'):'');
+ setE(pwd2,'#suPwd2E',pwd2.value!==pwd.value?t('auth.e.pwd2'):'');
+ if(!ok)return;
+ const users=getUsers();const key=user.value.trim().toLowerCase();
+ if(users[key]){fb.textContent=t('auth.e.exists');fb.classList.add('bad');return;}
+ const salt=makeSalt();const hash=await hashPwd(pwd.value,salt);
+ users[key]={user:user.value.trim(),name:name.value.trim(),salt:salt,hash:hash,created:new Date().toISOString()};
+ saveUsers(users);
+ sessionUser=user.value.trim();
+ try{localStorage.setItem('tj-session',sessionUser)}catch(err){}
+ $('#authModal').classList.remove('open');
+ afterAuthChange(t('auth.welcome').replace('{n}',name.value.trim()));});
+function logout(){sessionUser=null;
+ try{localStorage.removeItem('tj-session')}catch(e){}
+ $$('.modal-overlay').forEach(m=>m.classList.remove('open'));
+ afterAuthChange(t('auth.bye'));}
+function openDash(){
+ $('#dashUser').textContent=(sessionUser||t('dash.guest')).toUpperCase();
+ const n=Object.keys(validated).length,ch=(cDone?1:0)+(qDone?1:0),tot=n+ch;
+ $('#dashXp').textContent=xp;
+ $('#dashLang').textContent=n+'/4';
+ $('#dashChal').textContent=ch+'/2';
+ $('#dashProg').textContent=Math.round(tot/6*100)+'%';
+ $('#dashClr').textContent=t(tot<=1?'clr.0':tot===2?'clr.1':tot<=4?'clr.2':tot===5?'clr.3':'clr.4');
+ const names={python:'PYTHON',c:'C',batch:'BATCH',js:'JAVASCRIPT'};let bh='';
+ for(const k in names)bh+='<span class="dash-badge'+(validated[k]?'':' off')+'">'+names[k]+(validated[k]?' ✓':'')+'</span>';
+ bh+='<span class="dash-badge'+(cDone?'':' off')+'">CÉSAR'+(cDone?' ✓':'')+'</span>';
+ bh+='<span class="dash-badge'+(qDone?'':' off')+'">PHISHING'+(qDone?' ✓':'')+'</span>';
+ $('#dashBadges').innerHTML=bh;
+ $('#dashModal').classList.add('open');}
+$('#navAuth').addEventListener('click',()=>{sessionUser?openDash():openAuth('login')});
+$('#navEnroll').addEventListener('click',e=>{e.preventDefault();sessionUser?logout():openAuth('signup')});
+$('#dashLogout').addEventListener('click',logout);
+$$('[data-legal]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();$('#legalBody').innerHTML=t('legal.body');$('#legalModal').classList.add('open')}));
+$$('[data-soon]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();toast(t('toast.soon'))}));
+
+/* ================= LANGUE ================= */
+function applyLang(lang){
+ curLang=lang;
+ try{localStorage.setItem('tj-lang',lang)}catch(e){}
+ document.documentElement.lang=lang;
+ document.title=t('doc.title');
+ $$('[data-i18n]').forEach(el=>{const v=I18N[lang][el.dataset.i18n];if(v!==undefined)el.innerHTML=v});
+ $$('[data-i18n-ph]').forEach(el=>{const v=I18N[lang][el.dataset.i18nPh];if(v)el.placeholder=v});
+ $('#langFr').classList.toggle('on',lang==='fr');
+ $('#langEn').classList.toggle('on',lang==='en');
+ $('#themeName').textContent=palName(pIdx);
+ renderTicker();
+ applyProgressUI();
+ updateAuthUI();
+ if(bootDone)retypeBoot();
+ if(!REDUCED)$$('.hero [data-scramble]').forEach(el=>{el.dataset.text=el.textContent;scramble(el)});
+ tickClock();}
+$('#langFr').addEventListener('click',()=>{if(curLang!=='fr'){applyLang('fr');toast(t('lang.set'))}});
+$('#langEn').addEventListener('click',()=>{if(curLang!=='en'){applyLang('en');toast(t('lang.set'))}});
+
+/* ================= INIT ================= */
+try{sessionUser=localStorage.getItem('tj-session')||null}catch(e){}
+loadProgress();
+applyLang(curLang);
+runBoot();
+})();
+</script>
+</body>
+</html>
