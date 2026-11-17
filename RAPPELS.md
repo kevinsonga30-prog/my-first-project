@@ -115,3 +115,16 @@ Pour chaque ressource ou projet, noter :
 - [ ] notes et difficultés consignées.
 
 **Important :** ce fichier est une feuille de route, pas une obligation de tout installer. Nous choisirons les projets dans l'ordre où les connaissances nécessaires auront été acquises.
+
+
+## 6. Linux — parcours complémentaire (dans cet ordre)
+
+Ces quatre ressources ont été envoyées comme parcours Linux progressif. On les suivra dans cet ordre, après avoir commencé les bases du terminal.
+
+1. [Linux Journey](https://linuxjourney.com/) — cours pour découvrir Linux, la ligne de commande, les fichiers, les permissions, les processus et des notions réseau.
+2. [Terminus (MIT)](https://web.mit.edu/mprat/Public/web/Terminus/Web/main.html) — jeu d'aventure dans un terminal pour pratiquer les commandes et la navigation.
+3. [Linux Survival](https://linuxsurvival.com/) — tutoriel interactif pour s'entraîner aux commandes Linux.
+4. [OverTheWire — Bandit](https://overthewire.org/wargames/bandit/) — défis progressifs pour consolider les bases Unix/Linux.
+
+**Objectif :** savoir se repérer dans le terminal, manipuler des fichiers, comprendre les permissions et être à l'aise avec les commandes de base avant d'aborder les exercices de cybersécurité.
+
