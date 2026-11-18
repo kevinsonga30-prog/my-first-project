@@ -128,3 +128,18 @@ Ces quatre ressources ont été envoyées comme parcours Linux progressif. On le
 
 **Objectif :** savoir se repérer dans le terminal, manipuler des fichiers, comprendre les permissions et être à l'aise avec les commandes de base avant d'aborder les exercices de cybersécurité.
 
+
+
+## 7. Gestion d'équipes d'agents IA
+
+### Paperclip
+- [Dépôt officiel Paperclip](https://github.com/paperclipai/paperclip) — application open source de gestion et d'orchestration d'agents IA en équipe. Le dépôt officiel est principalement en TypeScript.
+- [Guide officiel : créer sa première équipe d'agents](https://docs.paperclip.ing/guides/getting-started/five-minute-path/) — parcours de prise en main annoncé en cinq minutes.
+- **À apprendre avant :** bases de JavaScript/TypeScript, Node.js, terminal, Git, API et notions de modèles de langage et d'agents. Comprendre aussi les permissions, les accès aux outils et les coûts éventuels des modèles utilisés.
+- **But de l'étude :** comprendre comment organiser plusieurs agents, leur attribuer des tâches et suivre leur travail. On commencera par lire la documentation et étudier l'architecture ; l'installation locale viendra seulement lorsque le matériel et les prérequis seront adaptés.
+- **Précaution :** ne pas donner à des agents un accès général à ses fichiers, comptes ou dépôts. Tester d'abord dans un environnement séparé avec des données fictives.
+
+### IA.zip — communauté et ressources
+- [Page de présentation IA.zip](https://www.skool.com/lia-facile-4888/about) — communauté présentée par son auteur comme gratuite, avec une bibliothèque annoncée de skills, agents, commandes et workflows n8n, ainsi que des sessions Q&A.
+- **But de l'étude :** explorer les ressources proposées et apprendre à distinguer les outils utiles des contenus promotionnels.
+- **À vérifier avant utilisation :** conditions d'accès, gratuité réelle des différentes ressources, règles de confidentialité, licences, qualité et sécurité des fichiers partagés. Ne jamais importer un skill, une commande ou un workflow sans avoir lu son contenu et compris ses permissions.
