@@ -129,7 +129,6 @@ Ces quatre ressources ont été envoyées comme parcours Linux progressif. On le
 **Objectif :** savoir se repérer dans le terminal, manipuler des fichiers, comprendre les permissions et être à l'aise avec les commandes de base avant d'aborder les exercices de cybersécurité.
 
 
-
 ## 7. Gestion d'équipes d'agents IA
 
 ### Paperclip
@@ -143,3 +142,10 @@ Ces quatre ressources ont été envoyées comme parcours Linux progressif. On le
 - [Page de présentation IA.zip](https://www.skool.com/lia-facile-4888/about) — communauté présentée par son auteur comme gratuite, avec une bibliothèque annoncée de skills, agents, commandes et workflows n8n, ainsi que des sessions Q&A.
 - **But de l'étude :** explorer les ressources proposées et apprendre à distinguer les outils utiles des contenus promotionnels.
 - **À vérifier avant utilisation :** conditions d'accès, gratuité réelle des différentes ressources, règles de confidentialité, licences, qualité et sécurité des fichiers partagés. Ne jamais importer un skill, une commande ou un workflow sans avoir lu son contenu et compris ses permissions.
+
+## 8. Ressource cybersécurité — Kobaskyy / Follow the White
+
+- [Kobaskyy — Follow the White](https://start.me/p/aNrBJX/follow-the-white-) — page de ressources partagée par l'utilisateur.
+- **But de l'étude :** consulter et trier les ressources de cette page pour repérer celles qui peuvent servir à apprendre la cybersécurité progressivement.
+- **À faire avant de pratiquer :** examiner les liens et leurs auteurs, vérifier les prérequis et les conditions d'utilisation. Privilégier les cours et laboratoires conçus pour l'apprentissage ; ne tester que ses propres systèmes ou ceux pour lesquels on a une autorisation explicite.
+- **Note :** le contenu détaillé de la page reste à examiner ensemble ; aucune ressource individuelle n'est encore validée.
