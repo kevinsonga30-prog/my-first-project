@@ -149,3 +149,26 @@ Ces quatre ressources ont été envoyées comme parcours Linux progressif. On le
 - **But de l'étude :** consulter et trier les ressources de cette page pour repérer celles qui peuvent servir à apprendre la cybersécurité progressivement.
 - **À faire avant de pratiquer :** examiner les liens et leurs auteurs, vérifier les prérequis et les conditions d'utilisation. Privilégier les cours et laboratoires conçus pour l'apprentissage ; ne tester que ses propres systèmes ou ceux pour lesquels on a une autorisation explicite.
 - **Note :** le contenu détaillé de la page reste à examiner ensemble ; aucune ressource individuelle n'est encore validée.
+
+
+## 9. HexSecTeam — fiches de référence Linux, réseau et Nmap
+
+Images partagées par l'utilisateur (HexSecTeam), à utiliser comme support de révision et non comme commandes à exécuter aveuglément.
+
+### Fiches à étudier
+1. **Nmap — Core Basics** : comprendre les concepts de base et la lecture des résultats dans un environnement autorisé.
+2. **Nmap — Target Selection** : comprendre le concept de sélection/définition de cibles; pratique uniquement en laboratoire ou avec autorisation.
+3. **Nmap — Host Discovery** : comprendre la découverte d'hôtes et les familles de méthodes (TCP, UDP, ICMP, ARP); pas de balayage de réseaux tiers.
+4. **Linux Networking** : interfaces, routes, connectivité, DNS et connexions réseau.
+5. **System Intelligence** : informations système, distribution, noyau, utilisateur et matériel.
+6. **Services & Processes** : processus, services, états et diagnostic.
+7. **Security & Hardening** : privilèges, permissions, mises à jour, pare-feu et audit défensif.
+8. **SSH & Remote Access** : principes d'accès distant sécurisé, clés et transferts.
+9. **Disks & Backups** : espace disque, partitions, montages, sauvegarde et restauration.
+
+### Progression
+- Lire chaque fiche et noter les termes/concepts importants.
+- Vérifier les prérequis avant toute pratique.
+- Pratiquer le diagnostic uniquement sur son propre appareil ou dans un laboratoire de formation.
+- Ne lancer aucune commande de modification, d'accès distant ou de scan sans comprendre son effet et sans autorisation.
+- Résumer les notions dans le cahier et cocher la fiche quand elle est comprise.
